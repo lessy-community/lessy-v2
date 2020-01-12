@@ -179,4 +179,147 @@ class AuthTest extends IntegrationTestCase
         $this->assertSame('john@doe.com', $variables['email']);
         $this->assertArrayHasKey('locale', $variables['errors']);
     }
+
+    public function testLogin()
+    {
+        $request = new \Minz\Request('GET', '/login');
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+    }
+
+    public function testLoginWhenConnected()
+    {
+        $user_id = self::$factories['users']->create();
+        $_SESSION['current_user_id'] = $user_id;
+        $request = new \Minz\Request('GET', '/login');
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, ['Location' => '/']);
+    }
+
+    public function testCreateSession()
+    {
+        $user_dao = new models\dao\User();
+        $user_id = self::$factories['users']->create([
+            'username' => 'john',
+            'password_hash' => password_hash('secret', PASSWORD_BCRYPT),
+        ]);
+        $request = new \Minz\Request('POST', '/login', [
+            'csrf' => (new CSRF())->generateToken(),
+            'identifier' => 'john',
+            'password' => 'secret',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, [
+            'Location' => '/?status=connected'
+        ]);
+        $this->assertSame($user_id, $_SESSION['current_user_id']);
+    }
+
+    public function testCreateSessionWhenConnected()
+    {
+        $user_id = self::$factories['users']->create([
+            'username' => 'john',
+            'password_hash' => password_hash('secret', PASSWORD_BCRYPT),
+        ]);
+        $_SESSION['current_user_id'] = $user_id;
+        $request = new \Minz\Request('POST', '/login', [
+            'csrf' => (new CSRF())->generateToken(),
+            'identifier' => 'john',
+            'password' => 'secret',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, ['Location' => '/']);
+    }
+
+    public function testCreateSessionWithEmail()
+    {
+        $user_dao = new models\dao\User();
+        $user_id = self::$factories['users']->create([
+            'email' => 'john@doe.com',
+            'password_hash' => password_hash('secret', PASSWORD_BCRYPT),
+        ]);
+        $request = new \Minz\Request('POST', '/login', [
+            'csrf' => (new CSRF())->generateToken(),
+            'identifier' => 'john@doe.com',
+            'password' => 'secret',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, [
+            'Location' => '/?status=connected'
+        ]);
+        $this->assertSame($user_id, $_SESSION['current_user_id']);
+    }
+
+    public function testCreateSessionFailsIfCsrfIsWrong()
+    {
+        $user_dao = new models\dao\User();
+        $user_id = self::$factories['users']->create([
+            'username' => 'john',
+            'password_hash' => password_hash('secret', PASSWORD_BCRYPT),
+        ]);
+        (new CSRF())->generateToken();
+        $request = new \Minz\Request('POST', '/login', [
+            'csrf' => 'not the token',
+            'identifier' => 'john',
+            'password' => 'secret',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 400);
+        $this->assertArrayNotHasKey('current_user_id', $_SESSION);
+        $variables = $response->output()->variables();
+        $this->assertSame('john', $variables['identifier']);
+        $this->assertNotEmpty($variables['error']);
+    }
+
+    public function testCreateSessionFailsIfUsernameDoesNotExist()
+    {
+        $user_dao = new models\dao\User();
+        $request = new \Minz\Request('POST', '/login', [
+            'csrf' => (new CSRF())->generateToken(),
+            'identifier' => 'john',
+            'password' => 'secret',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 400);
+        $this->assertArrayNotHasKey('current_user_id', $_SESSION);
+        $variables = $response->output()->variables();
+        $this->assertSame('john', $variables['identifier']);
+        $this->assertNotEmpty($variables['error']);
+    }
+
+    public function testCreateSessionFailsIfPasswordIsInvalid()
+    {
+        $user_dao = new models\dao\User();
+        $user_id = self::$factories['users']->create([
+            'username' => 'john',
+            'password_hash' => password_hash('secret', PASSWORD_BCRYPT),
+        ]);
+        $request = new \Minz\Request('POST', '/login', [
+            'csrf' => (new CSRF())->generateToken(),
+            'identifier' => 'john',
+            'password' => 'not the secret',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 400);
+        $this->assertArrayNotHasKey('current_user_id', $_SESSION);
+        $variables = $response->output()->variables();
+        $this->assertSame('john', $variables['identifier']);
+        $this->assertNotEmpty($variables['error']);
+    }
 }

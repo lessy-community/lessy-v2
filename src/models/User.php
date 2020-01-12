@@ -78,6 +78,18 @@ class User extends \Minz\Model
         $this->fromValues($values);
     }
 
+    /**
+     * Compare a password to the stored hash.
+     *
+     * @param string $password
+     *
+     * @return boolean Return true if the password matches the hash, else false
+     */
+    public function verifyPassword($password)
+    {
+        return password_verify($password, $this->password_hash);
+    }
+
     public static function punyencodeEmail($email)
     {
         $at_position = strrpos($email, '@');

@@ -27,4 +27,17 @@ class HomeTest extends IntegrationTestCase
         $variables = $response->output()->variables();
         $this->assertArrayHasKey('success', $variables);
     }
+
+    public function testIndexWithStatusConnected()
+    {
+        $request = new \Minz\Request('GET', '/', [
+            'status' => 'connected'
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $variables = $response->output()->variables();
+        $this->assertArrayHasKey('success', $variables);
+    }
 }

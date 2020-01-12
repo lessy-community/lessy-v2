@@ -19,6 +19,8 @@ class Application
 
         $router->addRoute('get', '/register', 'auth#register');
         $router->addRoute('post', '/register', 'auth#create_user');
+        $router->addRoute('get', '/login', 'auth#login');
+        $router->addRoute('post', '/login', 'auth#create_session');
         $router->addRoute('post', '/sessions/locale', 'sessions#update_locale');
 
         $this->engine = new \Minz\Engine($router);

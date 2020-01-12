@@ -94,3 +94,56 @@ function create_user($request)
         ]);
     }
 }
+
+function login($request)
+{
+    if (utils\currentUser()) {
+        return Response::redirect('home#index');
+    }
+
+    return Response::ok('auth/login.phtml');
+}
+
+function create_session($request)
+{
+    if (utils\currentUser()) {
+        return Response::redirect('home#index');
+    }
+
+    $user_dao = new models\dao\User();
+
+    $identifier = $request->param('identifier');
+    $password = $request->param('password');
+
+    $csrf = new CSRF();
+    if (!$csrf->validateToken($request->param('csrf'))) {
+        return Response::badRequest('auth/login.phtml', [
+            'identifier' => $identifier,
+            'error' => _('A security verification failed, you should submit the form again.'),
+        ]);
+    }
+
+    if (strpos($identifier, '@') === false) {
+        $user_values = $user_dao->findBy(['username' => $identifier]);
+    } else {
+        $user_values = $user_dao->findBy(['email' => $identifier]);
+    }
+
+    if (!$user_values) {
+        return Response::badRequest('auth/login.phtml', [
+            'identifier' => $identifier,
+            'error' => _('We were unable to log you in, your credentials seem to be invalid.'),
+        ]);
+    }
+
+    $user = new models\User($user_values);
+    if ($user->verifyPassword($password)) {
+        $_SESSION['current_user_id'] = $user->id;
+        return Response::redirect('home#index', ['status' => 'connected']);
+    } else {
+        return Response::badRequest('auth/login.phtml', [
+            'identifier' => $identifier,
+            'error' => _('We were unable to log you in, your credentials seem to be invalid.'),
+        ]);
+    }
+}

@@ -15,6 +15,8 @@ function index($request)
     $status = $request->param('status');
     if ($status === 'registered') {
         $variables['success'] = _('Your account has been created, welcome!');
+    } elseif ($status === 'connected') {
+        $variables['success'] = _('You’re now connected, welcome back!');
     }
 
     return Response::ok('home/index.phtml', $variables);
