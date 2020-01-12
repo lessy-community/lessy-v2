@@ -14,4 +14,17 @@ class HomeTest extends IntegrationTestCase
 
         $this->assertResponse($response, 200);
     }
+
+    public function testIndexWithStatusRegistered()
+    {
+        $request = new \Minz\Request('GET', '/', [
+            'status' => 'registered'
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $variables = $response->output()->variables();
+        $this->assertArrayHasKey('success', $variables);
+    }
 }

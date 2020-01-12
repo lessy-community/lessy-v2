@@ -12,5 +12,10 @@ function index($request)
         'current_locale' => utils\Locale::currentLocale(),
     ];
 
+    $status = $request->param('status');
+    if ($status === 'registered') {
+        $variables['success'] = _('Your account has been created, welcome!');
+    }
+
     return Response::ok('home/index.phtml', $variables);
 }
