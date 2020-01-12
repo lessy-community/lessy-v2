@@ -13,6 +13,8 @@ class Application
         $router = new \Minz\Router();
         $router->addRoute('get', '/', 'home#index');
 
+        $router->addRoute('cli', '/system/init', 'system#init');
+
         $router->addRoute('post', '/sessions/locale', 'sessions#update_locale');
 
         $this->engine = new \Minz\Engine($router);

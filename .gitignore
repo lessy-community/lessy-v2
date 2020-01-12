@@ -1,2 +1,5 @@
 /bin/*
 !/bin/.keep
+
+/data/*
+!/data/.keep
