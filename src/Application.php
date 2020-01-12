@@ -11,11 +11,19 @@ class Application
     {
         // Initialize the routes
         $router = new \Minz\Router();
+        $router->addRoute('get', '/', 'home#index');
 
         $router->addRoute('post', '/sessions/locale', 'sessions#update_locale');
 
         $this->engine = new \Minz\Engine($router);
         \Minz\Url::setRouter($router);
+
+        // Initialize the default variables accessible from the views
+        \Minz\Output\View::declareDefaultVariables([
+            'success' => null,
+            'error' => null,
+            'errors' => [],
+        ]);
 
         // Initialize the localization
         bindtextdomain('main', utils\Locale::localesPath());

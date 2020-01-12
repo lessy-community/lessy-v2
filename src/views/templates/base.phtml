@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0" />
+        <link rel=stylesheet type=text/css href="<?= url_static('static/style/main.css') ?>">
+        <link rel=stylesheet type=text/css href="<?= url_static('static/fork-awesome/css/fork-awesome.min.css') ?>">
+        <script src="<?= url_static('static/scripts/main.js') ?>" defer="defer" async="async"></script>
+        <?php if (isset($title)): ?>
+            <title><?= $title ?> · Lessy</title>
+        <?php else: ?>
+            <title>Lessy</title>
+        <?php endif; ?>
+    </head>
+
+    <body class="layout layout-one-column">
+        <header class="layout-header">
+            <div class="layout-header-container">
+                <a class="layout-header-home" href="<?= url('home#index') ?>">
+                    <div class="app-logo flavour-normal size-small with-brand">
+                        <img alt="" src="<?= url_static('static/logo.svg') ?>">
+                        <span>Lessy</span>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="layout-main">
+            <div class="layout-main-container">
+                <?php if (isset($title)): ?>
+                    <header class="layout-main-header">
+                        <h1><?= $title ?></h1>
+                    </header>
+                <?php endif; ?>
+
+                <?php if ($error): ?>
+                    <p class="notification notification-error">
+                        <?= $error ?>
+                    </p>
+                <?php elseif ($success): ?>
+                    <p class="notification notification-success">
+                        <?= $success ?>
+                    </p>
+                <?php endif; ?>
+
+                <?= $content ?>
+            </div>
+        </main>
+    </body>
+</html>

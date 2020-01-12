@@ -1,0 +1,83 @@
+.layout {
+    display: flex;
+    min-height: 100vh;
+
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.layout .layout-header {
+    padding: .5rem 1rem;
+}
+
+.layout .layout-header-home {
+    text-decoration: none;
+}
+
+@media(min-width: 800px) {
+    .layout .layout-header {
+        padding: 1rem 2rem;
+    }
+}
+
+.layout .layout-header-container {
+    display: flex;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+
+    align-items: stretch;
+}
+
+.layout > .layout-main {
+    padding: 1rem;
+
+    flex-grow: 1;
+}
+
+.layout.layout-one-column .layout-header {
+    background: linear-gradient(45deg, var(--color-grey-20),
+                                       var(--color-grey-20) calc(100% - 11rem),
+                                       var(--color-pine-70) calc(100% - 11rem),
+                                       var(--color-pine-70) calc(100% - 10.5rem),
+                                       var(--color-grey-20) calc(100% - 10.5rem),
+                                       var(--color-grey-20) calc(100% - 10rem),
+                                       var(--color-pine-70) calc(100% - 10rem));
+}
+
+.layout.layout-one-column .layout-main {
+    background: linear-gradient(225deg, var(--color-grey-10) 80%,
+                                        var(--color-grey-20) 80%,
+                                        var(--color-grey-20) 81%,
+                                        var(--color-grey-10) 81%,
+                                        var(--color-grey-10) 83%,
+                                        var(--color-grey-20) 83%);
+}
+
+.layout.layout-one-column .layout-main-container {
+    max-width: 30rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.layout.layout-one-column .layout-main-header {
+    margin-bottom: 2rem;
+
+    text-align: center;
+}
+
+.layout.layout-one-column .layout-main-header h1 {
+    margin-bottom: .75rem;
+}
+
+.layout.layout-one-column .layout-main-header::after {
+    display: block;
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+
+    border: .15rem solid var(--color-pine-60);
+    border-radius: .25rem;
+
+    content: '';
+}

@@ -1,0 +1,97 @@
+@import '_variables.css';
+@import '_typography.css';
+@import '_layouts.css';
+@import '_forms.css';
+@import '_buttons.css';
+
+@font-face {
+    font-family: 'Permanent Marker';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Permanent Marker Regular'),
+        local('PermanentMarker-Regular'),
+        url('/static/permanentmarker-regular.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: var(--color-pine-80);
+}
+
+a:hover,
+a:focus {
+    color: var(--color-pine-90);
+    text-decoration: none;
+}
+
+.app-logo {
+    padding: .25em;
+
+    color: var(--color-pine-70);
+    font-family: 'Permanent Marker', cursive;
+}
+
+.app-logo img {
+    width: 1em;
+    height: 1em;
+}
+
+.app-logo span {
+    line-height: 1em;
+}
+
+.app-logo.size-small {
+    font-size: 1.75rem;
+}
+.app-logo.size-large {
+    font-size: 7rem;
+}
+@media(max-width: 800px) {
+    .app-logo.size-large {
+        font-size: 5rem;
+    }
+}
+
+.app-logo.flavour-inversed {
+    color: var(--color-white);
+
+    background-color: var(--color-pine-70);
+    border-radius: .25rem;
+}
+.app-logo.flavour-black {
+    color: var(--color-grey-90);
+}
+
+.app-logo.with-brand {
+    display: flex;
+    padding-left: 0;
+    padding-right: 0;
+    align-items: stretch;
+}
+
+.notification {
+    margin-bottom: 1rem;
+    padding: .5rem 1rem;
+
+    border: .25rem solid;
+    border-radius: .5rem;
+}
+.notification.notification-success {
+    color: var(--color-green-70);
+    border-color: var(--color-green-50);
+}
+.notification.notification-error {
+    color: var(--color-red-70);
+    border-color: var(--color-red-50);
+}
