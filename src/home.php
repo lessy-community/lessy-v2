@@ -17,6 +17,8 @@ function index($request)
         $variables['success'] = _('Your account has been created, welcome!');
     } elseif ($status === 'connected') {
         $variables['success'] = _('You’re now connected, welcome back!');
+    } elseif ($status === 'deconnected') {
+        $variables['success'] = _('You’re now disconnected, see you!');
     }
 
     return Response::ok('home/index.phtml', $variables);

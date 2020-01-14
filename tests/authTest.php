@@ -322,4 +322,46 @@ class AuthTest extends IntegrationTestCase
         $this->assertSame('john', $variables['identifier']);
         $this->assertNotEmpty($variables['error']);
     }
+
+    public function testDeleteSession()
+    {
+        $user_id = self::$factories['users']->create();
+        $_SESSION['current_user_id'] = $user_id;
+        $request = new \Minz\Request('POST', '/logout', [
+            'csrf' => (new CSRF())->generateToken(),
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, [
+            'Location' => '/?status=deconnected'
+        ]);
+        $this->assertArrayNotHasKey('current_user_id', $_SESSION);
+    }
+
+    public function testDeleteSessionWhenUnconnected()
+    {
+        $request = new \Minz\Request('POST', '/logout', [
+            'csrf' => (new CSRF())->generateToken(),
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, ['Location' => '/']);
+    }
+
+    public function testDeleteSessionFailsIfCsrfIsWrong()
+    {
+        $user_id = self::$factories['users']->create();
+        $_SESSION['current_user_id'] = $user_id;
+        (new CSRF())->generateToken();
+        $request = new \Minz\Request('POST', '/logout', [
+            'csrf' => 'not the token',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, ['Location' => '/']);
+        $this->assertArrayHasKey('current_user_id', $_SESSION);
+    }
 }

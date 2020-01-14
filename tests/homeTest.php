@@ -40,4 +40,17 @@ class HomeTest extends IntegrationTestCase
         $variables = $response->output()->variables();
         $this->assertArrayHasKey('success', $variables);
     }
+
+    public function testIndexWithStatusDeconnected()
+    {
+        $request = new \Minz\Request('GET', '/', [
+            'status' => 'deconnected'
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $variables = $response->output()->variables();
+        $this->assertArrayHasKey('success', $variables);
+    }
 }

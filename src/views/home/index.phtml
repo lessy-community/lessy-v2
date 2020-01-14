@@ -34,7 +34,12 @@
 
 <h1><?= _('Welcome on Lessy!') ?></h1>
 
-<?php if (!$current_user): ?>
+<?php if ($current_user): ?>
+    <form method="post" action="<?= url('auth#delete_session') ?>">
+        <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+        <button type="submit"><?= _('Logout') ?></button>
+    </form>
+<?php else: ?>
     <p>
         <a href="<?= url('auth#login') ?>"><?= _('Log in') ?></a>
         <?= _('or') ?>

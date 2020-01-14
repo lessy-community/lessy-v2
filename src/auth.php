@@ -147,3 +147,18 @@ function create_session($request)
         ]);
     }
 }
+
+function delete_session($request)
+{
+    $csrf = new CSRF();
+    if (!$csrf->validateToken($request->param('csrf'))) {
+        return Response::redirect('home#index');
+    }
+
+    if (utils\currentUser()) {
+        session_unset();
+        return Response::redirect('home#index', ['status' => 'deconnected']);
+    } else {
+        return Response::redirect('home#index');
+    }
+}
