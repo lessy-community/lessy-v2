@@ -1,0 +1,152 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-01-19 17:42+0100\n"
+"PO-Revision-Date: 2020-01-19 17:42+0100\n"
+"Last-Translator: Marien Fressinaud <dev@marienfressinaud.fr>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ../../../src\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: auth.php:44 auth.php:122
+msgid "A security verification failed, you should submit the form again."
+msgstr ""
+"Une validation de sécurité a échoué, vous devriez valider le formulaire à "
+"nouveau."
+
+#: auth.php:56
+msgid "This username is already used, you must choose another one."
+msgstr "Ce nom d’utilisateur est déjà utilisé, vous devez en choisir un autre."
+
+#: auth.php:65
+msgid "This username is invalid."
+msgstr "Ce nom d’utilisateur est invalide."
+
+#: auth.php:67
+msgid "This email address is invalid."
+msgstr "Cette adresse courriel est invalide."
+
+#: auth.php:69
+msgid "This language is not supported."
+msgstr "Cette langue n’est pas supportée."
+
+#: auth.php:93
+msgid ""
+"We were unable to create your account for an unknown reason. Please contact "
+"the support."
+msgstr ""
+"Nous n’avons pas pu créer votre compte pour une raison inconnue. Merci de "
+"contacter le support."
+
+#: auth.php:135 auth.php:146
+msgid "We were unable to log you in, your credentials seem to be invalid."
+msgstr ""
+"Nous n’avons pas pu vous connecter, vos identifiants semblent invalides."
+
+#: home.php:17
+msgid "Your account has been created, welcome!"
+msgstr "Votre compte a été créé, bienvenue !"
+
+#: home.php:19
+msgid "You’re now connected, welcome back!"
+msgstr "Vous êtes désormais connecté·e, bon retour parmi nous !"
+
+#: home.php:21
+msgid "You’re now disconnected, see you!"
+msgstr "Vous êtes désormais déconnecté·e, à bientôt !"
+
+#: views/auth/login.phtml:1
+msgid "Login"
+msgstr "Connexion"
+
+#: views/auth/login.phtml:7
+msgid "Username or email"
+msgstr "Nom d’utilisateur·ice ou courriel"
+
+#: views/auth/login.phtml:19 views/auth/register.phtml:88
+msgid "Password"
+msgstr "Mot de passe"
+
+#: views/auth/login.phtml:31 views/home/index.phtml:44
+msgid "Log in"
+msgstr "Se connecter"
+
+#: views/auth/login.phtml:35
+msgid "Back to homepage"
+msgstr "Retour à l’accueil"
+
+#: views/auth/register.phtml:1
+msgid "Let’s get to know each other"
+msgstr "Apprenons à nous connaître"
+
+#: views/auth/register.phtml:5
+msgid ""
+"We have to ask you some information to create your account. This should take "
+"only few seconds."
+msgstr ""
+"Nous devons vous demander quelques informations afin de créer votre compte. "
+"Vous pourrez utiliser Lessy dans peu de temps."
+
+#: views/auth/register.phtml:13
+msgid "Language"
+msgstr "Langue"
+
+#: views/auth/register.phtml:40
+msgid "Email address"
+msgstr "Adresse courriel"
+
+#: views/auth/register.phtml:43
+msgid "We’ll use it only to contact you in case of a problem."
+msgstr ""
+"Nous l’utiliserons uniquement pour pouvoir vous contacter en cas de problème."
+
+#: views/auth/register.phtml:64
+msgid "Username"
+msgstr "Nom d’utilisateur·ice"
+
+#: views/auth/register.phtml:67
+msgid "Only non-accentuated letters, numbers and dashes are allowed."
+msgstr ""
+"Utilisez seulement des lettres non accentuées, des chiffres et/ou des tirets."
+
+#: views/auth/register.phtml:91
+msgid ""
+"A strong password must be at least 8 characters length and should not be "
+"reused across different websites."
+msgstr ""
+"Un mot de passe robuste fait au minimum 8 caractères et ne doit pas être "
+"réutilisé sur différents sites."
+
+#: views/auth/register.phtml:104
+msgid "Create an account"
+msgstr "Créer un compte"
+
+#: views/auth/register.phtml:108
+msgid "Cancel and go back to homepage"
+msgstr "Annuler et revenir à l’accueil"
+
+#: views/home/index.phtml:29
+msgid "Submit"
+msgstr "Valider"
+
+#: views/home/index.phtml:35
+msgid "Welcome on Lessy!"
+msgstr "Bienvenue sur Lessy !"
+
+#: views/home/index.phtml:40
+msgid "Logout"
+msgstr "Se déconnecter"
+
+#: views/home/index.phtml:45
+msgid "or"
+msgstr "ou"
+
+#: views/home/index.phtml:46
+msgid "register"
+msgstr "s’inscrire"

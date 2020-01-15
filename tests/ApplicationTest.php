@@ -24,4 +24,17 @@ class ApplicationTest extends IntegrationTestCase
 
         $this->assertSame('fr_FR.UTF8', setlocale(LC_ALL, 0));
     }
+
+    public function testSetCurrentLocaleWithCurrentUser()
+    {
+        $user_id = self::$factories['users']->create([
+            'locale' => 'fr_FR',
+        ]);
+        $_SESSION['current_user_id'] = $user_id;
+        $request = new \Minz\Request('GET', '/');
+
+        self::$application->run($request);
+
+        $this->assertSame('fr_FR.UTF8', setlocale(LC_ALL, 0));
+    }
 }
