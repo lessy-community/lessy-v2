@@ -2,10 +2,10 @@
 
 USER = $(shell id -u):$(shell id -g)
 
-ifdef DOCKER
-	PHP = docker-compose -f docker/docker-compose.yml run --no-deps php php
-else
+ifdef NATIVE_PHP
 	PHP = php
+else
+	PHP = docker-compose -f docker/docker-compose.yml run --no-deps php php
 endif
 
 .PHONY: start
