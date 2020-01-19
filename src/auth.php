@@ -108,7 +108,12 @@ function login($request)
         return Response::redirect('home#index');
     }
 
-    return Response::ok('auth/login.phtml');
+    $from = $request->param('from');
+    if ($from) {
+        return Response::ok('auth/login.phtml', ['from' => $from]);
+    } else {
+        return Response::ok('auth/login.phtml');
+    }
 }
 
 function create_session($request)
@@ -121,11 +126,13 @@ function create_session($request)
 
     $identifier = $request->param('identifier');
     $password = $request->param('password');
+    $from = $request->param('from');
 
     $csrf = new CSRF();
     if (!$csrf->validateToken($request->param('csrf'))) {
         return Response::badRequest('auth/login.phtml', [
             'identifier' => $identifier,
+            'from' => $from,
             'error' => _('A security verification failed, you should submit the form again.'),
         ]);
     }
@@ -139,6 +146,7 @@ function create_session($request)
     if (!$user_values) {
         return Response::badRequest('auth/login.phtml', [
             'identifier' => $identifier,
+            'from' => $from,
             'error' => _('We were unable to log you in, your credentials seem to be invalid.'),
         ]);
     }
@@ -146,10 +154,17 @@ function create_session($request)
     $user = new models\User($user_values);
     if ($user->verifyPassword($password)) {
         $_SESSION['current_user_id'] = $user->id;
-        return Response::redirect('home#index', ['status' => 'connected']);
+
+        if ($from) {
+            $location = urldecode($from);
+        } else {
+            $location = 'home#index';
+        }
+        return Response::redirect($location, ['status' => 'connected']);
     } else {
         return Response::badRequest('auth/login.phtml', [
             'identifier' => $identifier,
+            'from' => $from,
             'error' => _('We were unable to log you in, your credentials seem to be invalid.'),
         ]);
     }

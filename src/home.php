@@ -13,13 +13,6 @@ function index($request)
         'current_locale' => utils\Locale::currentLocale(),
     ];
 
-    $status = $request->param('status');
-    if ($status === 'connected') {
-        $variables['success'] = _('You’re now connected, welcome back!');
-    } elseif ($status === 'deconnected') {
-        $variables['success'] = _('You’re now disconnected, see you!');
-    }
-
     $current_user = utils\currentUser();
     if (!$current_user) {
         return Response::ok('home/index.phtml', $variables);

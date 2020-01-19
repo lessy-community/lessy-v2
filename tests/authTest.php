@@ -236,6 +236,20 @@ class AuthTest extends IntegrationTestCase
         $this->assertResponse($response, 302, null, ['Location' => '/']);
     }
 
+    public function testLoginWithFromParameter()
+    {
+        $request = new \Minz\Request('GET', '/login', [
+            'from' => 'cycles%23preferences'
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $variables = $response->output()->variables();
+        $this->assertArrayHasKey('from', $variables);
+        $this->assertSame('cycles%23preferences', $variables['from']);
+    }
+
     public function testCreateSession()
     {
         $user_dao = new models\dao\User();
@@ -288,6 +302,28 @@ class AuthTest extends IntegrationTestCase
 
         $this->assertResponse($response, 302, null, [
             'Location' => '/?status=connected'
+        ]);
+        $this->assertSame($user_id, $_SESSION['current_user_id']);
+    }
+
+    public function testCreateSessionWithFromParameter()
+    {
+        $user_dao = new models\dao\User();
+        $user_id = self::$factories['users']->create([
+            'username' => 'john',
+            'password_hash' => password_hash('secret', PASSWORD_BCRYPT),
+        ]);
+        $request = new \Minz\Request('POST', '/login', [
+            'csrf' => (new CSRF())->generateToken(),
+            'identifier' => 'john',
+            'password' => 'secret',
+            'from' => 'cycles%23preferences',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, [
+            'Location' => '/cycles/preferences?status=connected'
         ]);
         $this->assertSame($user_id, $_SESSION['current_user_id']);
     }

@@ -37,4 +37,36 @@ class ApplicationTest extends IntegrationTestCase
 
         $this->assertSame('fr_FR.UTF8', setlocale(LC_ALL, 0));
     }
+
+    public function testStatusConnected()
+    {
+        $_SESSION['locale'] = 'en_GB';
+        $request = new \Minz\Request('GET', '/', [
+            'status' => 'connected',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $this->assertStringContainsString(
+            'You’re now connected, welcome back!',
+            $response->render()
+        );
+    }
+
+    public function testStatusDeconnected()
+    {
+        $_SESSION['locale'] = 'en_GB';
+        $request = new \Minz\Request('GET', '/', [
+            'status' => 'deconnected'
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $this->assertStringContainsString(
+            'You’re now disconnected, see you!',
+            $response->render()
+        );
+    }
 }

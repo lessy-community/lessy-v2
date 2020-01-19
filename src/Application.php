@@ -42,14 +42,6 @@ class Application
     {
         $current_user = utils\currentUser();
 
-        // Initialize the default variables accessible from the views
-        \Minz\Output\View::declareDefaultVariables([
-            'success' => null,
-            'error' => null,
-            'errors' => [],
-            'current_user' => $current_user,
-        ]);
-
         // Setup correct localization
         if ($current_user) {
             date_default_timezone_set($current_user->timezone);
@@ -60,6 +52,22 @@ class Application
             $locale = utils\Locale::defaultLocale();
         }
         utils\Locale::setCurrentLocale($locale);
+
+        // Initialize the default variables accessible from the views
+        $status = $request->param('status');
+        $success = null;
+        if ($status === 'connected') {
+            $success = _('You’re now connected, welcome back!');
+        } elseif ($status === 'deconnected') {
+            $success = _('You’re now disconnected, see you!');
+        }
+
+        \Minz\Output\View::declareDefaultVariables([
+            'success' => $success,
+            'error' => null,
+            'errors' => [],
+            'current_user' => $current_user,
+        ]);
 
         // Run the request against the engine
         return $this->engine->run($request);
