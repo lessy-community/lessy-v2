@@ -16,6 +16,7 @@ class Application
         $router->addRoute('get', '/', 'home#index');
 
         $router->addRoute('cli', '/system/init', 'system#init');
+        $router->addRoute('cli', '/system/migrate', 'system#migrate');
 
         $router->addRoute('get', '/register', 'auth#register');
         $router->addRoute('post', '/register', 'auth#create_user');

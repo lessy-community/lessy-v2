@@ -21,6 +21,18 @@ stop: ## Stop and clean Docker server
 init: ## Initialize the application
 	$(PHP) ./lessy --request /system/init
 
+.PHONY: migration
+migration: ## Create a migration file (take NAME parameter)
+	MIGRATION_NAME=$(shell date +%Y%m%d_%H%M%S)_$(NAME) ;\
+	MIGRATION_FILE=src/migrations/$${MIGRATION_NAME}.php ;\
+	cp docs/migration.template.php $${MIGRATION_FILE} ;\
+	sed -i s/{NAMESPACE}/$${MIGRATION_NAME}/ $${MIGRATION_FILE} ;\
+	$(EDITOR) $${MIGRATION_FILE}
+
+.PHONY: migrate
+migrate: ## Apply pending migrations
+	$(PHP) ./lessy --request /system/migrate
+
 .PHONY: test
 test: bin/phpunit  ## Run the test suite
 	$(PHP) ./bin/phpunit --bootstrap ./tests/bootstrap.php ./tests
