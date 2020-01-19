@@ -4,6 +4,7 @@ namespace Lessy\controllers\auth;
 
 use Minz\Tests\IntegrationTestCase;
 use Minz\CSRF;
+use Lessy\tests;
 use Lessy\models;
 
 class AuthTest extends IntegrationTestCase
@@ -19,8 +20,7 @@ class AuthTest extends IntegrationTestCase
 
     public function testRegisterWhenConnected()
     {
-        $user_id = self::$factories['users']->create();
-        $_SESSION['current_user_id'] = $user_id;
+        tests\utils\login();
         $request = new \Minz\Request('GET', '/register');
 
         $response = self::$application->run($request);
@@ -55,8 +55,7 @@ class AuthTest extends IntegrationTestCase
 
     public function testCreateUserWhenConnected()
     {
-        $user_id = self::$factories['users']->create();
-        $_SESSION['current_user_id'] = $user_id;
+        tests\utils\login();
         $request = new \Minz\Request('POST', '/register', [
             'csrf' => (new CSRF())->generateToken(),
             'username' => 'john',
@@ -191,8 +190,7 @@ class AuthTest extends IntegrationTestCase
 
     public function testLoginWhenConnected()
     {
-        $user_id = self::$factories['users']->create();
-        $_SESSION['current_user_id'] = $user_id;
+        tests\utils\login();
         $request = new \Minz\Request('GET', '/login');
 
         $response = self::$application->run($request);
@@ -223,11 +221,7 @@ class AuthTest extends IntegrationTestCase
 
     public function testCreateSessionWhenConnected()
     {
-        $user_id = self::$factories['users']->create([
-            'username' => 'john',
-            'password_hash' => password_hash('secret', PASSWORD_BCRYPT),
-        ]);
-        $_SESSION['current_user_id'] = $user_id;
+        tests\utils\login();
         $request = new \Minz\Request('POST', '/login', [
             'csrf' => (new CSRF())->generateToken(),
             'identifier' => 'john',
@@ -325,8 +319,7 @@ class AuthTest extends IntegrationTestCase
 
     public function testDeleteSession()
     {
-        $user_id = self::$factories['users']->create();
-        $_SESSION['current_user_id'] = $user_id;
+        tests\utils\login();
         $request = new \Minz\Request('POST', '/logout', [
             'csrf' => (new CSRF())->generateToken(),
         ]);
@@ -352,8 +345,7 @@ class AuthTest extends IntegrationTestCase
 
     public function testDeleteSessionFailsIfCsrfIsWrong()
     {
-        $user_id = self::$factories['users']->create();
-        $_SESSION['current_user_id'] = $user_id;
+        tests\utils\login();
         (new CSRF())->generateToken();
         $request = new \Minz\Request('POST', '/logout', [
             'csrf' => 'not the token',

@@ -20,3 +20,5 @@ include $app_path . '/autoload.php';
         'timezone' => 'UTC',
     ]
 );
+
+include $app_path . '/tests/utils.php';
