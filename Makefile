@@ -17,6 +17,10 @@ start: ## Start a development server (use Docker)
 stop: ## Stop and clean Docker server
 	docker-compose -f docker/docker-compose.yml down
 
+.PHONY: test
+test: bin/phpunit  ## Run the test suite
+	$(PHP) ./bin/phpunit --bootstrap ./tests/bootstrap.php ./tests
+
 .PHONY: lint
 lint: bin/phpcs  ## Run the linter on the PHP files
 	$(PHP) ./bin/phpcs --standard=PSR12 ./src ./tests
@@ -32,6 +36,11 @@ tree:  ## Display the structure of the application
 .PHONY: help
 help:
 	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+bin/phpunit:
+	mkdir -p bin/
+	wget -O bin/phpunit https://phar.phpunit.de/phpunit-8.5.2.phar
+	echo '984e15fbf116a19ab98b6a642ccfc139a1a88172ffef995a9a27d00c556238f1 bin/phpunit' | sha256sum -c - || rm bin/phpunit
 
 bin/phpcs:
 	mkdir -p bin/
