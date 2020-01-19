@@ -1,0 +1,111 @@
+<?php $this->template('base.phtml', ['title' => _('Let’s get to know each other'), 'error' => $error]); ?>
+
+<form method="post" action="<?= url('auth#create_user') ?>">
+    <p>
+        <?= _('We have to ask you some information to create your account. This should take only few seconds.') ?>
+    </p>
+
+    <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+
+    <div class="form-group">
+        <label for="locale">
+            <i class="fa fa-language"></i>
+            <?= _('Language') ?>
+        </label>
+
+        <select
+            id="locale"
+            name="locale"
+            <?= isset($errors['locale']) ? 'class="invalid"' : '' ?>
+            <?= isset($errors['locale']) ? 'autofocus' : '' ?>
+        >
+            <?php foreach ($available_locales as $locale_value => $locale_name): ?>
+                <option
+                    value="<?= $locale_value ?>"
+                    <?= $locale_value === $current_locale ? 'selected' : '' ?>
+                >
+                    <?= $locale_name ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
+        <?php if (isset($errors['locale'])): ?>
+            <p class="form-group-error">
+                <?= $errors['locale'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <div class="form-group">
+        <label for="email"><?= _('Email address') ?></label>
+
+        <p class="form-group-caption">
+            <?= _('We’ll use it only to contact you in case of a problem.') ?>
+        </p>
+
+        <input
+            type="email"
+            name="email"
+            id="email"
+            required
+            value="<?= isset($email) ? $email : '' ?>"
+            <?= isset($errors['email']) ? 'class="invalid"' : '' ?>
+            <?= empty($errors) || isset($errors['email']) ? 'autofocus' : '' ?>
+        />
+
+        <?php if (isset($errors['email'])): ?>
+            <p class="form-group-error">
+                <?= $errors['email'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <div class="form-group">
+        <label for="username"><?= _('Username') ?></label>
+
+        <p class="form-group-caption">
+            <?= _('Only non-accentuated letters, numbers and dashes are allowed.') ?>
+        </p>
+
+        <input
+            type="text"
+            name="username"
+            id="username"
+            required
+            value="<?= isset($username) ? $username : '' ?>"
+            <?= isset($errors['username']) ? 'class="invalid"' : '' ?>
+            <?= isset($errors['username']) ? 'autofocus' : '' ?>
+        />
+
+        <?php if (isset($errors['username'])): ?>
+            <p class="form-group-error">
+                <?= $errors['username'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <div class="form-group">
+        <label for="password"><?= _('Password') ?></label>
+
+        <p class="form-group-caption">
+            <?= _('A strong password must be at least 8 characters length and should not be reused across different websites.') ?>
+        </p>
+
+        <input
+            type="password"
+            name="password"
+            id="password"
+            required
+        />
+    </div>
+
+    <div class="form-group form-group-actions">
+        <button type="submit" class="button-primary button-large">
+            <?= _('Create an account') ?>
+        </button>
+
+        <a href="<?= url('home#index') ?>">
+            <?= _('Cancel and go back to homepage') ?>
+        </a>
+    </div>
+</form>

@@ -9,10 +9,19 @@ class Application
 
     public function __construct()
     {
+        include_once('utils/application.php');
+
         // Initialize the routes
         $router = new \Minz\Router();
         $router->addRoute('get', '/', 'home#index');
 
+        $router->addRoute('cli', '/system/init', 'system#init');
+
+        $router->addRoute('get', '/register', 'auth#register');
+        $router->addRoute('post', '/register', 'auth#create_user');
+        $router->addRoute('get', '/login', 'auth#login');
+        $router->addRoute('post', '/login', 'auth#create_session');
+        $router->addRoute('post', '/logout', 'auth#delete_session');
         $router->addRoute('post', '/sessions/locale', 'sessions#update_locale');
 
         $this->engine = new \Minz\Engine($router);
@@ -23,6 +32,7 @@ class Application
             'success' => null,
             'error' => null,
             'errors' => [],
+            'current_user' => utils\currentUser(),
         ]);
 
         // Initialize the localization
@@ -32,7 +42,10 @@ class Application
 
     public function run($request)
     {
-        if (isset($_SESSION['locale'])) {
+        $current_user = utils\currentUser();
+        if ($current_user) {
+            $locale = $current_user->locale;
+        } elseif (isset($_SESSION['locale'])) {
             $locale = $_SESSION['locale'];
         } else {
             $locale = utils\Locale::defaultLocale();
