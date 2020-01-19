@@ -9,6 +9,14 @@ use Lessy\models;
 
 class AuthTest extends IntegrationTestCase
 {
+    /**
+     * @after
+     */
+    public function logout()
+    {
+        tests\utils\logout();
+    }
+
     public function testRegister()
     {
         $request = new \Minz\Request('GET', '/register');

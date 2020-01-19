@@ -46,4 +46,9 @@ class User extends \Minz\DatabaseModel
         self::$current_user_instance = new \Lessy\models\User($current_user_values);
         return self::$current_user_instance;
     }
+
+    public static function resetCurrentUser()
+    {
+        self::$current_user_instance = null;
+    }
 }

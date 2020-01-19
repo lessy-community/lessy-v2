@@ -13,4 +13,5 @@ function login($user_values = [])
 function logout()
 {
     session_unset();
+    \Lessy\models\dao\User::resetCurrentUser();
 }

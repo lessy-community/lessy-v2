@@ -157,6 +157,7 @@ function delete_session($request)
 
     if (utils\currentUser()) {
         session_unset();
+        models\dao\User::resetCurrentUser();
         return Response::redirect('home#index', ['status' => 'deconnected']);
     } else {
         return Response::redirect('home#index');
