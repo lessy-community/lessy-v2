@@ -5,5 +5,9 @@ CREATE TABLE users (
     email TEXT,
     password_hash TEXT NOT NULL,
     locale TEXT,
-    timezone TEXT
+    timezone TEXT,
+
+    cycles_work_weeks INTEGER NOT NULL DEFAULT 4,
+    cycles_rest_weeks INTEGER NOT NULL DEFAULT 1,
+    cycles_start_day TEXT NOT NULL DEFAULT "monday"
 );
