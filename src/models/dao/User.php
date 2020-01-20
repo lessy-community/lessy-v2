@@ -16,7 +16,7 @@ class User extends \Minz\DatabaseModel
     {
         if ($model->id === null) {
             $values = $model->toValues();
-            $values['created_at'] = \Minz\Time::now();
+            $values['created_at'] = \Minz\Time::now()->getTimestamp();
             return $this->create($values);
         } else {
             $values = $model->toValues();
