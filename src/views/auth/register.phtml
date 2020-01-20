@@ -113,7 +113,7 @@
                 id="timezone"
                 required
                 value="<?= isset($timezone) ? $timezone : '' ?>"
-                <?= !isset($errors['timezone']) ? 'disabled' : '' ?>
+                <?= !isset($errors['timezone']) ? 'readonly' : '' ?>
                 <?= isset($errors['timezone']) ? 'autofocus' : '' ?>
                 <?= isset($errors['timezone']) ? 'class="invalid"' : '' ?>
             />
