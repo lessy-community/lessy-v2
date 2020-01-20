@@ -117,6 +117,18 @@ textarea {
     color: var(--color-red-50);
 }
 
+.form-group-stack {
+    display: flex;
+}
+
+.form-group-stack > button {
+    flex-shrink: 0;
+}
+
+.form-group-stack * + * {
+    margin-left: .5rem;
+}
+
 .form-error {
     padding-left: .5rem;
     padding-right: .5rem;

@@ -51,17 +51,18 @@ class User extends \Minz\Model
      * @param string $email
      * @param string $password_hash
      * @param string $locale
+     * @param string $timezone
      *
      * @throws \Minz\Error\ModelPropertyError if one of the value is invalid
      */
-    public static function new($username, $email, $password, $locale)
+    public static function new($username, $email, $password, $locale, $timezone)
     {
         return new self([
             'username' => $username,
             'email' => self::punyencodeEmail($email),
             'password_hash' => password_hash($password, PASSWORD_BCRYPT),
             'locale' => $locale,
-            'timezone' => 'UTC',
+            'timezone' => $timezone,
         ]);
     }
 
@@ -137,6 +138,9 @@ class User extends \Minz\Model
 
     public static function validateTimezone($timezone)
     {
-        return $timezone === 'UTC';
+        $previous_timezone = date_default_timezone_get();
+        $result = @date_default_timezone_set($timezone);
+        date_default_timezone_set($previous_timezone);
+        return $result;
     }
 }

@@ -45,6 +45,7 @@ class Application
     {
         $current_user = utils\currentUser();
         if ($current_user) {
+            date_default_timezone_set($current_user->timezone);
             $locale = $current_user->locale;
         } elseif (isset($_SESSION['locale'])) {
             $locale = $_SESSION['locale'];

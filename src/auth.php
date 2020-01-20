@@ -33,6 +33,7 @@ function create_user($request)
     $email = $request->param('email');
     $password = $request->param('password');
     $locale = $request->param('locale');
+    $timezone = $request->param('timezone');
 
     $csrf = new CSRF();
     if (!$csrf->validateToken($request->param('csrf'))) {
@@ -41,6 +42,7 @@ function create_user($request)
             'username' => $username,
             'email' => $email,
             'current_locale' => $locale,
+            'timezone' => $timezone,
             'error' => _('A security verification failed, you should submit the form again.'),
         ]);
     }
@@ -52,6 +54,7 @@ function create_user($request)
             'username' => $username,
             'email' => $email,
             'current_locale' => $locale,
+            'timezone' => $timezone,
             'errors' => [
                 'username' => _('This username is already used, you must choose another one.')
             ],
@@ -59,7 +62,7 @@ function create_user($request)
     }
 
     try {
-        $user = models\User::new($username, $email, $password, $locale);
+        $user = models\User::new($username, $email, $password, $locale, $timezone);
     } catch (Errors\ModelPropertyError $e) {
         if ($e->property() === 'username') {
             $errors = ['username' => _('This username is invalid.')];
@@ -67,6 +70,8 @@ function create_user($request)
             $errors = ['email' => _('This email address is invalid.')];
         } elseif ($e->property() === 'locale') {
             $errors = ['locale' => _('This language is not supported.')];
+        } elseif ($e->property() === 'timezone') {
+            $errors = ['timezone' => _('This timezone is not supported.')];
         } else {
             $errors = [$e->property() => $e->getMessage()];
         }
@@ -76,6 +81,7 @@ function create_user($request)
             'username' => $username,
             'email' => $email,
             'current_locale' => $locale,
+            'timezone' => $timezone,
             'errors' => $errors,
         ]);
     }
@@ -90,6 +96,7 @@ function create_user($request)
             'username' => $username,
             'email' => $email,
             'current_locale' => $locale,
+            'timezone' => $timezone,
             'error' => _('We were unable to create your account for an unknown reason. Please contact the support.'),
         ]);
     }

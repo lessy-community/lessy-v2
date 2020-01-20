@@ -26,6 +26,7 @@ button.disabled {
     box-shadow: 0 0 1px var(--color-grey-60);
 }
 button:hover:not(.disabled) { background-color: var(--color-grey-30); }
+button.active:not(.disabled),
 button:focus:not(.disabled) { background-color: var(--color-grey-40); }
 
 button.button-small {
@@ -50,16 +51,18 @@ button.button-primary.disabled {
     box-shadow: none;
 }
 button.button-primary:hover:not(.disabled) { background-color: var(--color-pine-80); }
+button.button-primary.active:not(.disabled),
 button.button-primary:focus:not(.disabled) { background-color: var(--color-pine-90); }
 
 button.button-ghost {
     padding-left: .5rem;
     padding-right: .5rem;
 
-    background-color: transparentize(var(--color-grey-90), .9);
+    background-color: var(--color-grey-20);
 }
 button.button-ghost.disabled {
     color: var(--color-grey-60);
 }
-button.button-ghost:hover:not(.disabled) { background-color: transparentize(var(--color-grey-90), .8); }
-button.button-ghost:focus:not(.disabled) { background-color: transparentize(var(--color-grey-90), .7); }
+button.button-ghost:hover:not(.disabled) { background-color: var(--color-grey-30); }
+button.button-ghost.active:not(.disabled),
+button.button-ghost:focus:not(.disabled) { background-color: var(--color-grey-40); }

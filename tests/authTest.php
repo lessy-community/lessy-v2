@@ -45,6 +45,7 @@ class AuthTest extends IntegrationTestCase
             'email' => 'john@doe.com',
             'password' => 'secret',
             'locale' => 'en_GB',
+            'timezone' => 'Europe/Paris',
         ]);
         $this->assertSame(0, $user_dao->count());
 
@@ -59,6 +60,7 @@ class AuthTest extends IntegrationTestCase
         $password_algo = password_get_info($user['password_hash'])['algo'];
         $this->assertSame(PASSWORD_BCRYPT, $password_algo);
         $this->assertSame(intval($user['id']), $_SESSION['current_user_id']);
+        $this->assertSame('Europe/Paris', $user['timezone']);
     }
 
     public function testCreateUserWhenConnected()
@@ -70,6 +72,7 @@ class AuthTest extends IntegrationTestCase
             'email' => 'john@doe.com',
             'password' => 'secret',
             'locale' => 'en_GB',
+            'timezone' => 'Europe/Paris',
         ]);
 
         $response = self::$application->run($request);
@@ -87,6 +90,7 @@ class AuthTest extends IntegrationTestCase
             'email' => 'john@doe.com',
             'password' => 'secret',
             'locale' => 'en_GB',
+            'timezone' => 'Europe/Paris',
         ]);
 
         $response = self::$application->run($request);
@@ -111,6 +115,7 @@ class AuthTest extends IntegrationTestCase
             'email' => 'john@doe.com',
             'password' => 'secret',
             'locale' => 'en_GB',
+            'timezone' => 'Europe/Paris',
         ]);
         $this->assertSame(1, $user_dao->count());
 
@@ -133,6 +138,7 @@ class AuthTest extends IntegrationTestCase
             'email' => 'john@doe.com',
             'password' => 'secret',
             'locale' => 'en_GB',
+            'timezone' => 'Europe/Paris',
         ]);
 
         $response = self::$application->run($request);
@@ -154,6 +160,7 @@ class AuthTest extends IntegrationTestCase
             'email' => 'john-doe.com', // missing at (@)
             'password' => 'secret',
             'locale' => 'en_GB',
+            'timezone' => 'Europe/Paris',
         ]);
 
         $response = self::$application->run($request);
@@ -175,6 +182,7 @@ class AuthTest extends IntegrationTestCase
             'email' => 'john@doe.com',
             'password' => 'secret',
             'locale' => 'invalid',
+            'timezone' => 'Europe/Paris',
         ]);
 
         $response = self::$application->run($request);
@@ -185,6 +193,28 @@ class AuthTest extends IntegrationTestCase
         $this->assertSame('john', $variables['username']);
         $this->assertSame('john@doe.com', $variables['email']);
         $this->assertArrayHasKey('locale', $variables['errors']);
+    }
+
+    public function testCreateUserFailsIfTimezoneIsInvalid()
+    {
+        $user_dao = new models\dao\User();
+        $request = new \Minz\Request('POST', '/register', [
+            'csrf' => (new CSRF())->generateToken(),
+            'username' => 'john',
+            'email' => 'john@doe.com',
+            'password' => 'secret',
+            'locale' => 'en_GB',
+            'timezone' => 'invalid',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertSame(0, $user_dao->count());
+        $this->assertResponse($response, 400);
+        $variables = $response->output()->variables();
+        $this->assertSame('john', $variables['username']);
+        $this->assertSame('john@doe.com', $variables['email']);
+        $this->assertArrayHasKey('timezone', $variables['errors']);
     }
 
     public function testLogin()

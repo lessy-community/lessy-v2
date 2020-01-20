@@ -99,6 +99,37 @@
         />
     </div>
 
+    <div class="form-group">
+        <label for="timezone"><?= _('Timezone') ?></label>
+
+        <p class="form-group-caption">
+            <?= _('This should be set automatically by your computer. Don’t change it unless you know what you do, or if you’ve been invited to.') ?>
+        </p>
+
+        <div class="form-group-stack">
+            <input
+                type="text"
+                name="timezone"
+                id="timezone"
+                required
+                value="<?= isset($timezone) ? $timezone : '' ?>"
+                <?= !isset($errors['timezone']) ? 'disabled' : '' ?>
+                <?= isset($errors['timezone']) ? 'autofocus' : '' ?>
+                <?= isset($errors['timezone']) ? 'class="invalid"' : '' ?>
+            />
+
+            <button id="timezone-change" type="button" class="button-ghost">
+                <?= _('Change') ?>
+            </button>
+        </div>
+
+        <?php if (isset($errors['timezone'])): ?>
+            <p class="form-group-error">
+                <?= $errors['timezone'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
     <div class="form-group form-group-actions">
         <button type="submit" class="button-primary button-large">
             <?= _('Create an account') ?>
