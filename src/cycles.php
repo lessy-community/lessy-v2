@@ -82,5 +82,41 @@ function update_preferences($request)
 
 function starting($request)
 {
-    return Response::ok('cycles/starting.phtml');
+    $current_user = utils\currentUser();
+    if (!$current_user) {
+        return Response::redirect('auth#login', ['from' => 'cycles#starting']);
+    }
+
+    $cycle = models\Cycle::newForUser($current_user);
+
+    return Response::ok('cycles/starting.phtml', ['cycle' => $cycle]);
+}
+
+function start($request)
+{
+    $current_user = utils\currentUser();
+    if (!$current_user) {
+        return Response::redirect('auth#login', ['from' => 'cycles#starting']);
+    }
+
+    $cycle = models\Cycle::newForUser($current_user);
+
+    $csrf = new CSRF();
+    if (!$csrf->validateToken($request->param('csrf'))) {
+        return Response::badRequest('cycles/starting.phtml', [
+            'cycle' => $cycle,
+            'error' => _('A security verification failed, you should submit the form again.'),
+        ]);
+    }
+
+    try {
+        $cycle_dao = new models\dao\Cycle();
+        $cycle_dao->save($cycle);
+        return Response::redirect('home#index');
+    } catch (Errors\DatabaseModelError $e) {
+        return Response::internalServerError('cycles/starting.phtml', [
+            'cycle' => $cycle,
+            'error' => _('We were unable to start your cycle for an unknown reason. Please contact the support.'),
+        ]);
+    }
 }

@@ -1,1 +1,29 @@
-<?php $this->template('base.phtml', ['title' => _('Cycle planning')]); ?>
+<?php
+    $this->template('base.phtml', [
+        'title' => _f('Cycle %d planning', $cycle->number),
+        'error' => $error,
+    ]);
+?>
+
+<p>
+    <?= _f('The next cycle will start on %s.', _d($cycle->start_at)) ?>
+</p>
+
+<p>
+    <?= _f('The work period will last %d weeks.', $cycle->work_weeks) ?><br />
+    <?= _f(_n('The rest period will last %d week.', 'The rest period will last %d weeks.', $cycle->rest_weeks), $cycle->rest_weeks) ?>
+</p>
+
+<p>
+    <?= _f('The cycle will end on %s.', _d($cycle->end_at)) ?>
+</p>
+
+<form method="post" action="<?= url('cycles#start') ?>">
+    <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+
+    <div class="form-group form-group-actions">
+        <button type="submit" class="button-primary button-large">
+            <?= _('Start the cycle') ?>
+        </button>
+    </div>
+</form>

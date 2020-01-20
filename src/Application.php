@@ -28,6 +28,7 @@ class Application
         $router->addRoute('get', '/cycles/preferences', 'cycles#preferences');
         $router->addRoute('post', '/cycles/preferences', 'cycles#update_preferences');
         $router->addRoute('get', '/cycles/starting', 'cycles#starting');
+        $router->addRoute('post', '/cycles/starting', 'cycles#start');
 
         $this->engine = new \Minz\Engine($router);
         \Minz\Url::setRouter($router);

@@ -5,6 +5,7 @@ namespace Lessy\controllers\home;
 use Minz\Tests\IntegrationTestCase;
 use Minz\CSRF;
 use Lessy\tests;
+use Lessy\models;
 
 class CyclesTest extends IntegrationTestCase
 {
@@ -163,6 +164,123 @@ class CyclesTest extends IntegrationTestCase
         $this->assertSame(5, $variables['work_weeks']);
         $this->assertSame(2, $variables['rest_weeks']);
         $this->assertSame('sunday', $variables['start_day']);
+        $this->assertNotEmpty($variables['error']);
+    }
+
+    public function testStarting()
+    {
+        \Minz\Time::freeze(date_create('2020-01-21 12:00')); // Tuesday
+        $user_id = tests\utils\login([
+            'cycles_work_weeks' => 4,
+            'cycles_rest_weeks' => 1,
+            'cycles_start_day' => 'monday',
+        ]);
+        $request = new \Minz\Request('GET', '/cycles/starting');
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $cycle = $response->output()->variables()['cycle'];
+        $this->assertSame(4, $cycle->work_weeks);
+        $this->assertSame(1, $cycle->rest_weeks);
+        $this->assertSame(
+            date_create('2020-01-20')->getTimestamp(),
+            $cycle->start_at->getTimestamp()
+        );
+        $this->assertSame(
+            date_create('2020-02-23')->getTimestamp(),
+            $cycle->end_at->getTimestamp()
+        );
+    }
+
+    public function testStartingWhenCurrentDayIsStartDay()
+    {
+        \Minz\Time::freeze(date_create('2020-01-20 12:00')); // Monday
+        $user_id = tests\utils\login([
+            'cycles_work_weeks' => 4,
+            'cycles_rest_weeks' => 1,
+            'cycles_start_day' => 'monday',
+        ]);
+        $request = new \Minz\Request('GET', '/cycles/starting');
+
+        $response = self::$application->run($request);
+
+        $cycle = $response->output()->variables()['cycle'];
+        $this->assertSame(
+            date_create('2020-01-20')->getTimestamp(),
+            $cycle->start_at->getTimestamp()
+        );
+    }
+
+    public function testStartingWhenUnconnected()
+    {
+        $request = new \Minz\Request('GET', '/cycles/starting');
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 302, null, ['Location' => '/login?from=cycles%23starting']);
+    }
+
+    public function testStart()
+    {
+        $cycle_dao = new models\dao\Cycle();
+        \Minz\Time::freeze(date_create('2020-01-21 12:00')); // Tuesday
+        $user_id = tests\utils\login([
+            'cycles_work_weeks' => 4,
+            'cycles_rest_weeks' => 1,
+            'cycles_start_day' => 'monday',
+        ]);
+        $request = new \Minz\Request('POST', '/cycles/starting', [
+            'csrf' => (new CSRF())->generateToken(),
+        ]);
+
+        $this->assertSame(0, $cycle_dao->count());
+
+        $response = self::$application->run($request);
+
+        $this->assertSame(1, $cycle_dao->count());
+
+        $this->assertResponse($response, 302, null, ['Location' => '/']);
+        $cycle = $cycle_dao->listAll()[0];
+        $this->assertSame(4, (int)$cycle['work_weeks']);
+        $this->assertSame(1, (int)$cycle['rest_weeks']);
+        $this->assertSame(
+            date_create('2020-01-20')->getTimestamp(),
+            (int)$cycle['start_at']
+        );
+    }
+
+    public function testStartWhenUnconnected()
+    {
+        $cycle_dao = new models\dao\Cycle();
+        $request = new \Minz\Request('POST', '/cycles/starting', [
+            'csrf' => (new CSRF())->generateToken(),
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertSame(0, $cycle_dao->count());
+        $this->assertResponse($response, 302, null, ['Location' => '/login?from=cycles%23starting']);
+    }
+
+    public function testStartFailsIfCsrfIsInvalid()
+    {
+        $cycle_dao = new models\dao\Cycle();
+        $user_id = tests\utils\login([
+            'cycles_work_weeks' => 4,
+            'cycles_rest_weeks' => 1,
+            'cycles_start_day' => 'monday',
+        ]);
+        (new CSRF())->generateToken();
+        $request = new \Minz\Request('POST', '/cycles/starting', [
+            'csrf' => 'not the token',
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertSame(0, $cycle_dao->count());
+        $this->assertResponse($response, 400);
+        $variables = $response->output()->variables();
         $this->assertNotEmpty($variables['error']);
     }
 }
