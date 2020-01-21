@@ -45,6 +45,11 @@ class User extends \Minz\Model
             'validator' => '\Lessy\models\User::validateTimezone',
         ],
 
+        'onboarding_step' => [
+            'type' => 'integer',
+            'required' => true,
+        ],
+
         'cycles_work_weeks' => [
             'type' => 'integer',
             'required' => true,
@@ -81,6 +86,7 @@ class User extends \Minz\Model
             'password_hash' => password_hash($password, PASSWORD_BCRYPT),
             'locale' => $locale,
             'timezone' => $timezone,
+            'onboarding_step' => 0,
 
             'cycles_work_weeks' => 4,
             'cycles_rest_weeks' => 1,

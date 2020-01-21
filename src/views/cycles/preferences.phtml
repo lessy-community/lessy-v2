@@ -1,13 +1,21 @@
-<?php $this->template('base.phtml', ['title' => _('Cycles preferences'), 'error' => $error]); ?>
+<?php
+    $this->template('base.phtml', [
+        'title' => _('Cycles preferences'),
+        'error' => $error,
+        'success' => $success,
+    ]);
+?>
 
 <form method="post" action="<?= url('cycles#update_preferences') ?>">
     <p>
         <?= _('Cycles allow you to set up routines over a certain number of weeks. Lessy will invite you to improve your routines at the end of each cycle. Cycles are splitted in weeks of work and weeks of rest.') ?>
     </p>
 
-    <p>
-        <?= _('To begin, let us know how Lessy must handle the cycles for you (you’ll be able to change these values later).') ?>
-    </p>
+    <?php if ($current_user->onboarding_step === 0): ?>
+        <p>
+            <?= _('To begin, let us know how Lessy must handle the cycles for you (you’ll be able to change these values later).') ?>
+        </p>
+    <?php endif; ?>
 
     <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
 

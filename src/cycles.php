@@ -15,11 +15,21 @@ function preferences($request)
         return Response::redirect('auth#login', ['from' => 'cycles#preferences']);
     }
 
-    return Response::ok('cycles/preferences.phtml', [
+    $variables = [
         'work_weeks' => $current_user->cycles_work_weeks,
         'rest_weeks' => $current_user->cycles_rest_weeks,
         'start_day' => $current_user->cycles_start_day,
-    ]);
+    ];
+
+    $status = $request->param('status');
+    if ($status === 'registered') {
+        $variables['success'] = _(
+            'Your account has been created, welcome! ' .
+            'Let’s start by configuring Lessy with you.'
+        );
+    }
+
+    return Response::ok('cycles/preferences.phtml', $variables);
 }
 
 function update_preferences($request)
@@ -44,6 +54,7 @@ function update_preferences($request)
     }
 
     try {
+        $current_user->setProperty('onboarding_step', 1);
         $current_user->setProperty('cycles_work_weeks', $work_weeks);
         $current_user->setProperty('cycles_rest_weeks', $rest_weeks);
         $current_user->setProperty('cycles_start_day', $start_day);

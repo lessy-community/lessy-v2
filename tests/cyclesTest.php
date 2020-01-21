@@ -35,6 +35,20 @@ class CyclesTest extends IntegrationTestCase
         $this->assertSame('sunday', $variables['start_day']);
     }
 
+    public function testPreferencesWithStatusRegistered()
+    {
+        tests\utils\login();
+        $request = new \Minz\Request('GET', '/cycles/preferences', [
+            'status' => 'registered'
+        ]);
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $variables = $response->output()->variables();
+        $this->assertNotEmpty($variables['success']);
+    }
+
     public function testPreferencesWhenUnconnected()
     {
         $request = new \Minz\Request('GET', '/cycles/preferences');
@@ -63,6 +77,7 @@ class CyclesTest extends IntegrationTestCase
 
         $this->assertResponse($response, 302, null, ['Location' => '/cycles/starting']);
         $user_values = $user_dao->find($user_id);
+        $this->assertSame(1, (int)$user_values['onboarding_step']);
         $this->assertSame(5, (int)$user_values['cycles_work_weeks']);
         $this->assertSame(2, (int)$user_values['cycles_rest_weeks']);
         $this->assertSame('sunday', $user_values['cycles_start_day']);

@@ -89,7 +89,7 @@ function create_user($request)
     $id = $user_dao->save($user);
     if ($id) {
         $_SESSION['current_user_id'] = $id;
-        return Response::redirect('home#index', ['status' => 'registered']);
+        return Response::redirect('cycles#preferences', ['status' => 'registered']);
     } else {
         return Response::internalServerError('auth/register.phtml', [
             'available_locales' => utils\Locale::availableLocales(),

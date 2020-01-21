@@ -6,6 +6,7 @@ CREATE TABLE users (
     password_hash TEXT NOT NULL,
     locale TEXT,
     timezone TEXT,
+    onboarding_step INTEGER NOT NULL DEFAULT 0,
 
     cycles_work_weeks INTEGER NOT NULL DEFAULT 4,
     cycles_rest_weeks INTEGER NOT NULL DEFAULT 1,
