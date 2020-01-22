@@ -81,21 +81,6 @@ a:focus {
     align-items: stretch;
 }
 
-.notification {
-    margin-bottom: 1rem;
-    padding: .5rem 1rem;
-
-    border: .25rem solid;
-    border-radius: .5rem;
-}
-.notification.notification-success {
-    color: var(--color-green-70);
-    border-color: var(--color-green-50);
-}
-.notification.notification-error {
-    color: var(--color-red-70);
-    border-color: var(--color-red-50);
-}
 
 .alert {
     margin-bottom: 1rem;
@@ -105,8 +90,15 @@ a:focus {
 
     border-radius: .25rem;
 }
+.alert.alert-success {
+    background-color: var(--color-green-50);
+}
 .alert.alert-warning {
     background-color: var(--color-gold-50);
+}
+.alert.alert-error {
+    color: var(--color-white);
+    background-color: var(--color-red-50);
 }
 
 .alert .alert-action a {
