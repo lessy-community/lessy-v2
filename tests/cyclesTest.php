@@ -195,7 +195,9 @@ class CyclesTest extends IntegrationTestCase
         $response = self::$application->run($request);
 
         $this->assertResponse($response, 200);
-        $cycle = $response->output()->variables()['cycle'];
+        $variables = $response->output()->variables();
+        $cycle = $variables['cycle'];
+        $this->assertTrue($variables['can_start']);
         $this->assertSame(4, $cycle->work_weeks);
         $this->assertSame(1, $cycle->rest_weeks);
         $this->assertSame(
@@ -223,6 +225,33 @@ class CyclesTest extends IntegrationTestCase
         $cycle = $response->output()->variables()['cycle'];
         $this->assertSame(
             date_create('2020-01-20')->getTimestamp(),
+            $cycle->start_at->getTimestamp()
+        );
+    }
+
+    public function testStartingWithAlreadyRunningCycle()
+    {
+        \Minz\Time::freeze(date_create('2020-01-21 12:00')); // Tuesday
+        $user_id = tests\utils\login([
+            'cycles_work_weeks' => 4,
+            'cycles_rest_weeks' => 1,
+            'cycles_start_day' => 'monday',
+        ]);
+        self::$factories['cycles']->create([
+            'user_id' => $user_id,
+            'start_at' => date_create('2020-01-20')->getTimestamp(),
+            'end_at' => date_create('2020-02-23')->getTimestamp(),
+        ]);
+        $request = new \Minz\Request('GET', '/cycles/starting');
+
+        $response = self::$application->run($request);
+
+        $this->assertResponse($response, 200);
+        $variables = $response->output()->variables();
+        $cycle = $variables['cycle'];
+        $this->assertFalse($variables['can_start']);
+        $this->assertSame(
+            date_create('2020-02-24')->getTimestamp(),
             $cycle->start_at->getTimestamp()
         );
     }
@@ -276,6 +305,25 @@ class CyclesTest extends IntegrationTestCase
 
         $this->assertSame(0, $cycle_dao->count());
         $this->assertResponse($response, 302, null, ['Location' => '/login?from=cycles%23starting']);
+    }
+
+    public function testStartFailsIfAlreadyRunningCycle()
+    {
+        $cycle_dao = new models\dao\Cycle();
+        $user_id = tests\utils\login();
+        self::$factories['cycles']->create([
+            'user_id' => $user_id,
+            'start_at' => \Minz\Time::ago(1, 'week')->getTimestamp(),
+            'end_at' => \Minz\Time::fromNow(4, 'weeks')->getTimestamp(),
+        ]);
+        $request = new \Minz\Request('POST', '/cycles/starting');
+
+        $response = self::$application->run($request);
+
+        $this->assertSame(1, $cycle_dao->count());
+        $this->assertResponse($response, 400);
+        $variables = $response->output()->variables();
+        $this->assertNotEmpty($variables['error']);
     }
 
     public function testStartFailsIfCsrfIsInvalid()

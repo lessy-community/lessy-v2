@@ -22,9 +22,21 @@
     <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
 
     <div class="form-group form-group-actions">
-        <button type="submit" class="button-primary button-large">
-            <?= _('Start the cycle') ?>
-        </button>
+        <?php if ($can_start): ?>
+            <button type="submit" class="button-primary button-large">
+                <?= _('Start the cycle') ?>
+            </button>
+        <?php else: ?>
+            <div class="alert alert-warning">
+                <p>
+                    <?= _('You can’t start a new cycle while another one is running.') ?>
+                </p>
+
+                <div class="alert-action">
+                    <a href="<?= url('home#index') ?>"><?= _('Back to the dashboard') ?></a>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <a href="<?= url('cycles#preferences') ?>">
             <?= _('Change the cycles preferences') ?>

@@ -55,7 +55,7 @@ class HomeTest extends IntegrationTestCase
     public function testIndexWhenConnectedAndWithCycles()
     {
         $user_id = tests\utils\login();
-        self::$factories['cycles']->create([
+        $cycle_id = self::$factories['cycles']->create([
             'user_id' => $user_id,
         ]);
         $request = new \Minz\Request('GET', '/');
@@ -63,7 +63,10 @@ class HomeTest extends IntegrationTestCase
         $response = self::$application->run($request);
 
         $this->assertResponse($response, 200);
+        $variables = $response->output()->variables();
         $pointer = $response->output()->pointer();
+        $this->assertArrayHasKey('current_cycle', $variables);
+        $this->assertSame($cycle_id, $variables['current_cycle']->id);
         $this->assertSame('home/dashboard.phtml', $pointer);
     }
 

@@ -82,8 +82,16 @@ class Cycle extends \Minz\Model
     {
         $cycle_dao = new dao\Cycle();
         $number = $cycle_dao->countForUser($user->id) + 1;
+        $running_cycle = $cycle_dao->findRunningForUser($user->id);
 
-        $start_at = \Minz\Time::now();
+        if ($running_cycle) {
+            $start_at = new \DateTime();
+            $start_at->setTimestamp($running_cycle['end_at']);
+            $start_at->modify('+1 day');
+        } else {
+            $start_at = \Minz\Time::now();
+        }
+
         if (strcasecmp($start_at->format('l'), $user->cycles_start_day) == 0) {
             $start_at->modify('today');
         } else {

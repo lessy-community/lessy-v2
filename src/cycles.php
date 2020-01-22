@@ -99,8 +99,18 @@ function starting($request)
     }
 
     $cycle = models\Cycle::newForUser($current_user);
+    $variables = [
+        'cycle' => $cycle,
+        'can_start' => true,
+    ];
 
-    return Response::ok('cycles/starting.phtml', ['cycle' => $cycle]);
+    $cycle_dao = new models\dao\Cycle();
+    $running_cycle = $cycle_dao->findRunningForUser($current_user->id);
+    if ($running_cycle) {
+        $variables['can_start'] = false;
+    }
+
+    return Response::ok('cycles/starting.phtml', $variables);
 }
 
 function start($request)
@@ -112,21 +122,32 @@ function start($request)
 
     $cycle = models\Cycle::newForUser($current_user);
 
+    $cycle_dao = new models\dao\Cycle();
+    $running_cycle = $cycle_dao->findRunningForUser($current_user->id);
+    if ($running_cycle) {
+        return Response::badRequest('cycles/starting.phtml', [
+            'cycle' => $cycle,
+            'can_start' => false,
+            'error' => _('You already have a running cycle, you can’t start a new one.'),
+        ]);
+    }
+
     $csrf = new CSRF();
     if (!$csrf->validateToken($request->param('csrf'))) {
         return Response::badRequest('cycles/starting.phtml', [
             'cycle' => $cycle,
+            'can_start' => true,
             'error' => _('A security verification failed, you should submit the form again.'),
         ]);
     }
 
     try {
-        $cycle_dao = new models\dao\Cycle();
         $cycle_dao->save($cycle);
         return Response::redirect('home#index');
     } catch (Errors\DatabaseModelError $e) {
         return Response::internalServerError('cycles/starting.phtml', [
             'cycle' => $cycle,
+            'can_start' => true,
             'error' => _('We were unable to start your cycle for an unknown reason. Please contact the support.'),
         ]);
     }
