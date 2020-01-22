@@ -1,0 +1,106 @@
+.popover {
+    z-index: 100;
+
+    display: none;
+    min-width: 10rem;
+    max-width: 15rem;
+    padding: .5rem;
+
+    color: var(--color-white);;
+
+    background-color: var(--color-grey-10);
+    box-shadow: 0 0 1px var(--color-grey-90),
+                0 0 3px var(--color-grey-40),
+                1px 2px 3px var(--color-grey-60);
+    border-radius: .25rem;
+}
+
+.popover[data-opened] {
+    display: block;
+}
+
+.popover [data-popper-arrow],
+.popover [data-popper-arrow]::before {
+    position: absolute;
+    z-index: 1;
+}
+
+.popover [data-popper-arrow]::before {
+    border: .5rem solid transparent;
+
+    content: "";
+}
+
+.popover[data-popper-placement^="top"] {
+    margin-bottom: .5rem;
+}
+.popover[data-popper-placement^="top"] [data-popper-arrow] {
+    bottom: -.5rem;
+}
+.popover[data-popper-placement^="top"] [data-popper-arrow]::before {
+    border-bottom-width: 0;
+    border-top-color: var(--color-grey-60);
+}
+
+.popover[data-popper-placement^="bottom"] {
+    margin-top: .5rem;
+}
+.popover[data-popper-placement^="bottom"] [data-popper-arrow] {
+    top: -.5rem;
+}
+.popover[data-popper-placement^="bottom"] [data-popper-arrow]::before {
+    border-top-width: 0;
+    border-bottom-color: var(--color-grey-60);
+}
+
+.popover[data-popper-placement^="left"] {
+    margin-right: .5rem;
+}
+.popover[data-popper-placement^="left"] [data-popper-arrow] {
+    right: -.5rem;
+}
+.popover[data-popper-placement^="left"] [data-popper-arrow]::before {
+    border-right-width: 0;
+    border-left-color: var(--color-grey-60);
+}
+
+.popover[data-popper-placement^="right"] {
+    margin-left: .5rem;
+}
+.popover[data-popper-placement^="right"] [data-popper-arrow] {
+    left: -.5rem;
+}
+.popover[data-popper-placement^="right"] [data-popper-arrow]::before {
+    border-left-width: 0;
+    border-right-color: var(--color-grey-60);
+}
+
+.popover .popover-separator {
+    margin: .5rem -.5rem;
+
+    border-top: 1px solid var(--color-grey-40);
+}
+
+.popover a:first-child,
+.popover .popover-separator + a {
+    margin-top: -.25rem;
+}
+
+.popover a {
+    display: block;
+    padding: .25rem;
+
+    color: var(--color-grey-90);
+    text-decoration: none;
+
+    border-radius: .25rem;
+    transition: background-color .2s ease-in-out;
+}
+.popover a:hover {
+    background-color: var(--color-grey-20);
+}
+
+.popover button {
+    display: block;
+    margin-right: 0;
+}
