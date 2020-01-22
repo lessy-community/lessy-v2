@@ -1,48 +1,39 @@
 <?php $this->template('base.phtml', ['success' => $success]); ?>
 
-<?php if (!$current_user): ?>
-    <form
-        class="form-locale"
-        id="form-locale"
-        method="post"
-        action="<?= url('sessions#update_locale') ?>"
-    >
-        <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+<form
+    class="form-locale"
+    id="form-locale"
+    method="post"
+    action="<?= url('sessions#update_locale') ?>"
+>
+    <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
 
-        <div class="form-group">
-            <label for="locale">
-                <i class="fa fa-language"></i>
-            </label>
+    <div class="form-group">
+        <label for="locale">
+            <i class="fa fa-language"></i>
+        </label>
 
-            <select id="locale" name="locale">
-                <?php foreach ($available_locales as $locale_value => $locale_name): ?>
-                    <option
-                        value="<?= $locale_value ?>"
-                        <?= $locale_value === $current_locale ? 'selected' : '' ?>
-                    >
-                        <?= $locale_name ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+        <select id="locale" name="locale">
+            <?php foreach ($available_locales as $locale_value => $locale_name): ?>
+                <option
+                    value="<?= $locale_value ?>"
+                    <?= $locale_value === $current_locale ? 'selected' : '' ?>
+                >
+                    <?= $locale_name ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
 
-            <noscript>
-                <button type="submit"><?= _('Submit') ?></button>
-            </noscript>
-        </div>
-    </form>
-<?php endif; ?>
+        <noscript>
+            <button type="submit"><?= _('Submit') ?></button>
+        </noscript>
+    </div>
+</form>
 
 <h1><?= _('Welcome on Lessy!') ?></h1>
 
-<?php if ($current_user): ?>
-    <form method="post" action="<?= url('auth#delete_session') ?>">
-        <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
-        <button type="submit"><?= _('Logout') ?></button>
-    </form>
-<?php else: ?>
-    <p>
-        <a href="<?= url('auth#login') ?>"><?= _('Log in') ?></a>
-        <?= _('or') ?>
-        <a href="<?= url('auth#register') ?>"><?= _('register') ?></a>
-    </p>
-<?php endif; ?>
+<p>
+    <a href="<?= url('auth#login') ?>"><?= _('Log in') ?></a>
+    <?= _('or') ?>
+    <a href="<?= url('auth#register') ?>"><?= _('register') ?></a>
+</p>

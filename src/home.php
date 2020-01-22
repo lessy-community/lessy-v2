@@ -21,5 +21,9 @@ function index($request)
         $variables['success'] = _('You’re now disconnected, see you!');
     }
 
-    return Response::ok('home/index.phtml', $variables);
+    if (utils\currentUser()) {
+        return Response::ok('home/dashboard.phtml', $variables);
+    } else {
+        return Response::ok('home/index.phtml', $variables);
+    }
 }
