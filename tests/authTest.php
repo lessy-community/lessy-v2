@@ -53,7 +53,7 @@ class AuthTest extends IntegrationTestCase
 
         $this->assertSame(1, $user_dao->count());
         $this->assertResponse($response, 302, null, [
-            'Location' => '/?status=registered'
+            'Location' => '/cycles/preferences?status=registered'
         ]);
         $user = $user_dao->findBy(['username' => 'john']);
         $this->assertSame('john@doe.com', $user['email']);

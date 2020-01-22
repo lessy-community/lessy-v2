@@ -96,3 +96,34 @@ a:focus {
     color: var(--color-red-70);
     border-color: var(--color-red-50);
 }
+
+.alert {
+    margin-bottom: 1rem;
+    padding: 1rem 1rem;
+
+    font-weight: bold;
+
+    border-radius: .25rem;
+}
+.alert.alert-warning {
+    background-color: var(--color-gold-50);
+}
+
+.alert .alert-action a {
+    padding: .5rem 1rem;
+
+    color: var(--color-grey-90);
+    text-decoration: none;
+
+    border-radius: .25rem;
+
+    transition: background-color .3s ease-in-out;
+}
+
+.alert.alert-warning .alert-action a {
+    background-color: var(--color-gold-60);
+}
+
+.alert .alert-action a:hover {
+    background-color: transparent;
+}

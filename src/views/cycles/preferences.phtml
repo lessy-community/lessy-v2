@@ -1,0 +1,140 @@
+<?php
+    $this->template('base.phtml', [
+        'title' => _('Cycles preferences'),
+        'error' => $error,
+        'success' => $success,
+    ]);
+?>
+
+<form method="post" action="<?= url('cycles#update_preferences') ?>">
+    <p>
+        <?= _('Cycles allow you to set up routines over a certain number of weeks. Lessy will invite you to improve your routines at the end of each cycle. Cycles are splitted in weeks of work and weeks of rest.') ?>
+    </p>
+
+    <?php if ($current_user->onboarding_step === 0): ?>
+        <p>
+            <?= _('To begin, let us know how Lessy must handle the cycles for you (you’ll be able to change these values later).') ?>
+        </p>
+    <?php endif; ?>
+
+    <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+
+    <div class="form-group">
+        <label for="work-weeks"><?= _('Number of weeks of work') ?></label>
+
+        <p class="form-group-caption">
+            <?= _('Lessy will provide you with useful indicators during work weeks to help you to get on with your work. Choose a number between 3 and 7 weeks.') ?>
+        </p>
+
+        <div class="form-group-stack">
+            <input
+                type="number"
+                name="work_weeks"
+                id="work-weeks"
+                required
+                min="3"
+                max="7"
+                value="<?= $work_weeks ?>"
+                class="input-size-1 <?= isset($errors['work_weeks']) ? 'invalid' : '' ?>"
+            />
+
+            <label for="work-weeks"><?= _('weeks') ?></label>
+        </div>
+
+        <?php if (isset($errors['work_weeks'])): ?>
+            <p class="form-group-error">
+                <?= $errors['work_weeks'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <div class="form-group">
+        <p class="label"><?= _('Number of weeks of rest') ?></p>
+
+        <p class="form-group-caption">
+            <?= _('Indicators might be stressful sometimes: Lessy knows that and will let you to take some rest by hiding them during these weeks.') ?>
+        </p>
+
+        <div class="form-group-radios">
+            <div class="form-group-radio">
+                <input
+                    type="radio"
+                    name="rest_weeks"
+                    id="rest-weeks-1"
+                    value="1"
+                    <?= $rest_weeks !== 2 ? 'checked' : '' ?>
+                />
+                <label for="rest-weeks-1">
+                    <?= _('1 week') ?>
+                </label>
+            </div>
+
+            <div class="form-group-radio">
+                <input
+                    type="radio"
+                    name="rest_weeks"
+                    id="rest-weeks-2"
+                    value="2"
+                    <?= $rest_weeks === 2 ? 'checked' : '' ?>
+                />
+                <label for="rest-weeks-2">
+                    <?= _('2 weeks') ?>
+                </label>
+            </div>
+        </div>
+
+        <?php if (isset($errors['rest_weeks'])): ?>
+            <p class="form-group-error">
+                <?= $errors['rest_weeks'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <div class="form-group">
+        <p class="label"><?= _('First day of the week') ?></p>
+
+        <p class="form-group-caption">
+            <?= _('The first day of the week is Monday in some cultures, while for others it’s Sunday. What do you prefer?') ?>
+        </p>
+
+        <div class="form-group-radios">
+            <div class="form-group-radio">
+                <input
+                    type="radio"
+                    name="start_day"
+                    id="start-day-monday"
+                    value="monday"
+                    <?= $start_day !== 'sunday' ? 'checked' : '' ?>
+                />
+                <label for="start-day-monday">
+                    <?= _('Monday') ?>
+                </label>
+            </div>
+
+            <div class="form-group-radio">
+                <input
+                    type="radio"
+                    name="start_day"
+                    id="start-day-sunday"
+                    value="sunday"
+                    <?= $start_day === 'sunday' ? 'checked' : '' ?>
+                />
+                <label for="start-day-sunday">
+                    <?= _('Sunday') ?>
+                </label>
+            </div>
+        </div>
+
+        <?php if (isset($errors['start_day'])): ?>
+            <p class="form-group-error">
+                <?= $errors['start_day'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <div class="form-group form-group-actions">
+        <button type="submit" class="button-primary button-large">
+            <?= _('Submit') ?>
+        </button>
+    </div>
+</form>

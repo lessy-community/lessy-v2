@@ -21,4 +21,21 @@ include $app_path . '/autoload.php';
     ]
 );
 
+\Minz\Tests\DatabaseFactory::addFactory(
+    'cycles',
+    '\Lessy\models\dao\Cycle',
+    [
+        'created_at' => time(),
+        'user_id' => function () {
+            $users_factory = new \Minz\Tests\DatabaseFactory('users');
+            return $users_factory->create();
+        },
+        'number' => 1,
+        'start_at' => time(),
+        'work_weeks' => 4,
+        'rest_weeks' => 1,
+        'end_at' => time() + ((5 * 7) - 1) * 86400,
+    ]
+);
+
 include $app_path . '/tests/utils.php';

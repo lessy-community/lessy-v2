@@ -44,6 +44,29 @@ class User extends \Minz\Model
             'required' => true,
             'validator' => '\Lessy\models\User::validateTimezone',
         ],
+
+        'onboarding_step' => [
+            'type' => 'integer',
+            'required' => true,
+        ],
+
+        'cycles_work_weeks' => [
+            'type' => 'integer',
+            'required' => true,
+            'validator' => '\Lessy\models\User::validateCyclesWorkWeeks',
+        ],
+
+        'cycles_rest_weeks' => [
+            'type' => 'integer',
+            'required' => true,
+            'validator' => '\Lessy\models\User::validateCyclesRestWeeks',
+        ],
+
+        'cycles_start_day' => [
+            'type' => 'string',
+            'required' => true,
+            'validator' => '\Lessy\models\User::validateCyclesStartDay',
+        ],
     ];
 
     /**
@@ -63,6 +86,11 @@ class User extends \Minz\Model
             'password_hash' => password_hash($password, PASSWORD_BCRYPT),
             'locale' => $locale,
             'timezone' => $timezone,
+            'onboarding_step' => 0,
+
+            'cycles_work_weeks' => 4,
+            'cycles_rest_weeks' => 1,
+            'cycles_start_day' => 'monday',
         ]);
     }
 
@@ -142,5 +170,20 @@ class User extends \Minz\Model
         $result = @date_default_timezone_set($timezone);
         date_default_timezone_set($previous_timezone);
         return $result;
+    }
+
+    public static function validateCyclesWorkWeeks($number_weeks)
+    {
+        return $number_weeks >= 3 && $number_weeks <= 7;
+    }
+
+    public static function validateCyclesRestWeeks($number_weeks)
+    {
+        return $number_weeks >= 1 && $number_weeks <= 2;
+    }
+
+    public static function validateCyclesStartDay($day)
+    {
+        return $day === 'monday' || $day === 'sunday';
     }
 }

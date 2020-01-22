@@ -1,0 +1,45 @@
+<?php
+    $this->template('base.phtml', [
+        'title' => _f('Cycle %d planning', $cycle->number),
+        'error' => $error,
+    ]);
+?>
+
+<p>
+    <?= _f('The next cycle will start on %s.', _d($cycle->start_at)) ?>
+</p>
+
+<p>
+    <?= _f('The work period will last %d weeks.', $cycle->work_weeks) ?><br />
+    <?= _f(_n('The rest period will last %d week.', 'The rest period will last %d weeks.', $cycle->rest_weeks), $cycle->rest_weeks) ?>
+</p>
+
+<p>
+    <?= _f('The cycle will end on %s.', _d($cycle->end_at)) ?>
+</p>
+
+<form method="post" action="<?= url('cycles#start') ?>">
+    <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+
+    <div class="form-group form-group-actions">
+        <?php if ($can_start): ?>
+            <button type="submit" class="button-primary button-large">
+                <?= _('Start the cycle') ?>
+            </button>
+        <?php else: ?>
+            <div class="alert alert-warning">
+                <p>
+                    <?= _('You can’t start a new cycle while another one is running.') ?>
+                </p>
+
+                <div class="alert-action">
+                    <a href="<?= url('home#index') ?>"><?= _('Back to the dashboard') ?></a>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <a href="<?= url('cycles#preferences') ?>">
+            <?= _('Change the cycles preferences') ?>
+        </a>
+    </div>
+</form>

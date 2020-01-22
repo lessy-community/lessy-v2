@@ -1,1 +1,13 @@
-<?php $this->template('base.phtml', ['title' => _('Dashboard'), 'success' => $success]); ?>
+<?php
+    $this->template('base.phtml', [
+        'title' => _('Dashboard'),
+        'success' => $success,
+        'error' => $error,
+    ]);
+?>
+
+<h2><?= _f('Running cycle %d', $current_cycle->number) ?></h2>
+
+<p>
+    <?= _d($current_cycle->start_at) ?>&nbsp;–&nbsp;<?= _d($current_cycle->end_at) ?>
+</p>
