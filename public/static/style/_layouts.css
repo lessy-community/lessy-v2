@@ -16,7 +16,7 @@
 
 @media(min-width: 800px) {
     .layout .layout-header {
-        padding: 1rem 2rem;
+        padding: .5rem 2rem;
     }
 }
 
@@ -29,13 +29,29 @@
     align-items: stretch;
 }
 
+.layout .layout-header-separator {
+    flex-grow: 1;
+}
+
+.layout .layout-header-right {
+    display: flex;
+    flex-shrink: 0;
+
+    align-items: center;
+}
+
 .layout > .layout-main {
     padding: 1rem;
 
     flex-grow: 1;
 }
 
-.layout.layout-one-column .layout-header {
+.layout.connected .layout-header {
+    background-color: var(--color-grey-20);
+    border-bottom: .25rem solid var(--color-grey-30);
+}
+
+.layout:not(.connected) .layout-header {
     background: linear-gradient(45deg, var(--color-grey-20),
                                        var(--color-grey-20) calc(100% - 11rem),
                                        var(--color-pine-70) calc(100% - 11rem),
