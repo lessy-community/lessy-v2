@@ -58,11 +58,12 @@ button.button-ghost {
     padding-left: .5rem;
     padding-right: .5rem;
 
-    background-color: var(--color-grey-20);
+    background-color: rgba(12, 12, 13, .1);
+    box-shadow: none;
 }
 button.button-ghost.disabled {
     color: var(--color-grey-60);
 }
-button.button-ghost:hover:not(.disabled) { background-color: var(--color-grey-30); }
+button.button-ghost:hover:not(.disabled) { background-color: rgba(12, 12, 13, .2); }
 button.button-ghost.active:not(.disabled),
-button.button-ghost:focus:not(.disabled) { background-color: var(--color-grey-40); }
+button.button-ghost:focus:not(.disabled) { background-color: rgba(12, 12, 13, .3); }
