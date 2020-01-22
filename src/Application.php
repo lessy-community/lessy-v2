@@ -28,14 +28,6 @@ class Application
         $this->engine = new \Minz\Engine($router);
         \Minz\Url::setRouter($router);
 
-        // Initialize the default variables accessible from the views
-        \Minz\Output\View::declareDefaultVariables([
-            'success' => null,
-            'error' => null,
-            'errors' => [],
-            'current_user' => utils\currentUser(),
-        ]);
-
         // Initialize the localization
         bindtextdomain('main', utils\Locale::localesPath());
         textdomain('main');
@@ -44,6 +36,16 @@ class Application
     public function run($request)
     {
         $current_user = utils\currentUser();
+
+        // Initialize the default variables accessible from the views
+        \Minz\Output\View::declareDefaultVariables([
+            'success' => null,
+            'error' => null,
+            'errors' => [],
+            'current_user' => $current_user,
+        ]);
+
+        // Setup correct localization
         if ($current_user) {
             date_default_timezone_set($current_user->timezone);
             $locale = $current_user->locale;
@@ -54,6 +56,7 @@ class Application
         }
         utils\Locale::setCurrentLocale($locale);
 
+        // Run the request against the engine
         return $this->engine->run($request);
     }
 }
