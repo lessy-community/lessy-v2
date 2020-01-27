@@ -10,6 +10,7 @@ class Application
     public function __construct()
     {
         include_once('utils/application.php');
+        include_once('utils/view_helpers.php');
 
         // Initialize the routes
         $router = new \Minz\Router();
@@ -69,6 +70,7 @@ class Application
             'error' => null,
             'errors' => [],
             'current_user' => $current_user,
+            'current_locale' => $locale,
         ]);
 
         // Run the request against the engine
