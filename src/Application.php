@@ -63,6 +63,7 @@ class Application
         }
 
         \Minz\Output\View::declareDefaultVariables([
+            'environment' => \Minz\Configuration::$environment,
             'success' => $success,
             'error' => null,
             'errors' => [],
@@ -70,6 +71,8 @@ class Application
         ]);
 
         // Run the request against the engine
-        return $this->engine->run($request);
+        $response = $this->engine->run($request);
+        $response->setContentSecurityPolicy('script-src', "'self' 'unsafe-eval'");
+        return $response;
     }
 }
