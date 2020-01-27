@@ -64,6 +64,7 @@ class Application
 
         \Minz\Output\View::declareDefaultVariables([
             'environment' => \Minz\Configuration::$environment,
+            'javascript_configuration' => utils\javascriptConfiguration(),
             'success' => $success,
             'error' => null,
             'errors' => [],

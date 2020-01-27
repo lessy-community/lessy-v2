@@ -1,4 +1,8 @@
 (function () {
+    // Load configuration
+    const confElement = document.getElementById('javascript-configuration');
+    const configuration = JSON.parse(confElement.innerHTML);
+
     // Autosubmit the locale form
     const locale_form = document.getElementById('form-locale');
     if (locale_form) {
