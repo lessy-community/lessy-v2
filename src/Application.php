@@ -15,6 +15,7 @@ class Application
         // Initialize the routes
         $router = new \Minz\Router();
         $router->addRoute('get', '/', 'home#index');
+        $router->addRoute('get', '/dashboard', 'home#dashboard');
 
         $router->addRoute('cli', '/system/init', 'system#init');
         $router->addRoute('cli', '/system/migrate', 'system#migrate');
