@@ -18,6 +18,13 @@
     <?= _f('The cycle will end on %s.', _d($cycle->end_at)) ?>
 </p>
 
+<ly-cycle-calendar
+    start-at="<?= $cycle->start_at->format('Y-m-d') ?>"
+    first-day="<?= $current_user->cycles_start_day ?>"
+    :work-weeks="<?= $cycle->work_weeks ?>"
+    :rest-weeks="<?= $cycle->rest_weeks ?>"
+></ly-cycle-calendar>
+
 <form method="post" action="<?= url('cycles#start') ?>">
     <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
 

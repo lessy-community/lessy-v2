@@ -1,0 +1,62 @@
+.cycle-calendars {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.month-calendar {
+    width: 17.5rem; /* =7x2.5 */
+
+    --cells-day-size: 2.5rem;
+}
+
+.month-calendar-label {
+    font-weight: bold;
+    text-align: center;
+}
+
+.month-calendar .month-calendar-week-header,
+.month-calendar .month-calendar-week {
+    display: flex;
+}
+
+.month-calendar .month-calendar-week {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.month-calendar .month-calendar-week.highlight {
+    background-color: var(--color-grey-30);
+}
+.month-calendar .month-calendar-week.first-highlight {
+    border-radius: 1.5rem 0 0 1.5rem;
+}
+.month-calendar .month-calendar-week.last-highlight {
+    border-radius: 0 1.5rem 1.5rem 0;
+}
+
+.month-calendar .month-calendar-week-header > *,
+.month-calendar .month-calendar-week > * {
+    width: var(--cells-day-size);
+    height: var(--cells-day-size);
+    padding: .5rem;
+
+    text-align: center;
+}
+
+.month-calendar .month-calendar-week-header > * {
+    font-size: .8rem;
+}
+
+.month-calendar .month-calendar-day.not-in-month {
+    color: var(--color-grey-40);
+
+    background-color: var(--color-grey-10);
+}
+
+.month-calendar .month-calendar-day.today:not(.not-in-month) {
+    color: var(--color-white);
+    font-weight: bold;
+
+    background-color: var(--color-pine-70);
+    border-radius: 50%;
+}

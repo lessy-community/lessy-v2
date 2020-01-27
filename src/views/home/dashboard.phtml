@@ -11,3 +11,10 @@
 <p>
     <?= _d($current_cycle->start_at) ?>&nbsp;–&nbsp;<?= _d($current_cycle->end_at) ?>
 </p>
+
+<ly-cycle-calendar
+    start-at="<?= $current_cycle->start_at->format('Y-m-d') ?>"
+    first-day="<?= $current_user->cycles_start_day ?>"
+    :work-weeks="<?= $current_cycle->work_weeks ?>"
+    :rest-weeks="<?= $current_cycle->rest_weeks ?>"
+></ly-cycle-calendar>
