@@ -72,4 +72,22 @@ class Task extends \Minz\Model
         parent::__construct(self::PROPERTIES);
         $this->fromValues($values);
     }
+
+    /**
+     * Initialize a list of Tasks from values (usually from database).
+     *
+     * @param array $array_of_values
+     *
+     * @throws \Minz\Error\ModelPropertyError if one of the value is invalid
+     *
+     * @return Lessy\models\Task[]
+     */
+    public static function daoToTasks($array_of_values)
+    {
+        $tasks = [];
+        foreach ($array_of_values as $values) {
+            $tasks[] = new self($values);
+        }
+        return $tasks;
+    }
 }

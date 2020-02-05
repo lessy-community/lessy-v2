@@ -10,9 +10,22 @@
 <nav class="layout-navigation">
     <ul>
         <li>
-            <a href="<?= url('home#dashboard') ?>">
+            <a
+                <?= $current_page === 'dashboard' ? 'class="active"' : '' ?>
+                href="<?= url('home#dashboard') ?>"
+            >
                 <i class="fa fa-fw fa-tachometer"></i>
                 <?= _('Dashboard') ?>
+            </a>
+        </li>
+
+        <li>
+            <a
+                <?= $current_page === 'tasks' ? 'class="active"' : '' ?>
+                href="<?= url('tasks#index') ?>"
+            >
+                <i class="fa fa-fw fa-check-circle"></i>
+                <?= _('Tasks') ?>
             </a>
         </li>
     </ul>

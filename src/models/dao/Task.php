@@ -24,4 +24,25 @@ class Task extends \Minz\DatabaseModel
             return true;
         }
     }
+
+    public function listForUser($user_id)
+    {
+        $sql = "SELECT * FROM {$this->table_name} "
+             . "WHERE user_id = :user_id ORDER BY priority";
+
+        $statement = $this->prepare($sql);
+        $result = $statement->execute([
+            ':user_id' => $user_id,
+        ]);
+        if (!$result) {
+            throw self::sqlStatementError($statement);
+        }
+
+        $result = $statement->fetchAll();
+        if ($result !== false) {
+            return $result;
+        } else {
+            throw self::sqlStatementError($statement);
+        }
+    }
 }

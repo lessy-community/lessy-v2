@@ -1,0 +1,31 @@
+<?php
+    $this->template('application.phtml', [
+        'title' => _('Tasks'),
+        'current_page' => 'tasks',
+        'success' => $success,
+        'error' => $error,
+    ]);
+?>
+
+<?php if ($tasks): ?>
+    <h2 class="list-title">
+        <?= _nf(
+            '%d task in your backlog',
+            '%d tasks in your backlog',
+            count($tasks),
+            count($tasks)
+        ) ?>
+    </h2>
+
+    <ul class="list list-stripped">
+        <?php foreach ($tasks as $task): ?>
+            <li class="list-item">
+                <?= $task->label ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php else: ?>
+    <p class="list-placeholder">
+        <?= _('There are no tasks here…') ?>
+    </p>
+<?php endif; ?>
