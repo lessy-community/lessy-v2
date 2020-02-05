@@ -17,7 +17,7 @@
             <?= $this->safe('javascript_configuration') ?>
         </script>
 
-        <script src="<?= url_static('static/scripts/main.js') ?>" defer="defer" async="async"></script>
+        <script type="module" src="<?= url_static('static/scripts/main.js') ?>" defer="defer" async="async"></script>
 
         <?php if (isset($title)): ?>
             <title><?= $title ?> · Lessy</title>
