@@ -152,252 +152,244 @@ function getWeekNumber(date) {
 }
 
 // Init calendars
-function initVue() {
-    if (!window.Vue) {
-        return setTimeout(initVue, 10);
-    }
+Vue.component('ly-month-calendar', {
+    props: {
+        month: Number,
+        year: Number,
+        firstDay: String,
+        weeksHighlights: Array,
+    },
 
-    Vue.component('ly-month-calendar', {
-        props: {
-            month: Number,
-            year: Number,
-            firstDay: String,
-            weeksHighlights: Array,
-        },
-
-        computed: {
-            firstWeekDate() {
-                // We want the first day in the calendar. Problem: it can
-                // differ from the first day of the month since the first
-                // day of the first week can be at the end of the previous
-                // month. We must calculate which day of the week we are,
-                // and substract enough days to get the first day of the
-                // week (Monday or Sunday, depending on the firstDay prop).
-                const firstWeekDate = new Date(this.year, this.month, 1);
-                const day = firstWeekDate.getDay();
-                if (day !== this.numericalFirstDay) {
-                    let daysToSubstract;
-                    if (this.firstDay === 'sunday') {
-                        // JavaScript considers first day of the week to be
-                        // Sunday (day = 0). If firstDay prop is Sunday, we
-                        // don't have to do much than substracting the day
-                        // to current date.
-                        daysToSubstract = day;
-                    } else if (day === 0) {
-                        // But if firstDay prop is Monday, we consider that
-                        // Sunday index is after Saturday. We still need to
-                        // substract 1 because of the offset due to
-                        // JavaScript considering first day being Sunday.
-                        daysToSubstract = 7 - 1;
-                    } else {
-                        // Same here, but other days are indexed in the
-                        // correct order.
-                        daysToSubstract = day - 1;
-                    }
-
-                    firstWeekDate.setDate(firstWeekDate.getDate() - daysToSubstract);
-                }
-                return firstWeekDate;
-            },
-
-            lastWeekDate() {
-                const lastWeekDate = new Date(this.year, this.month + 1, 0);
-                const day = lastWeekDate.getDay();
-                if (day !== this.numericalLastDay) {
-                    let daysToAdd;
-                    if (this.firstDay === 'sunday') {
-                        daysToAdd = this.numericalLastDay - day;
-                    } else {
-                        daysToAdd = 7 - day;
-                    }
-
-                    lastWeekDate.setDate(lastWeekDate.getDate() + daysToAdd);
-                }
-                return lastWeekDate;
-            },
-
-            numericalFirstDay() {
-                return this.firstDay === 'monday' ? 1 : 0;
-            },
-
-            numericalLastDay() {
-                return this.firstDay === 'monday' ? 0 : 6;
-            },
-
-            monthLabel() {
-                return configuration.l10n.months[this.month];
-            },
-
-            weekDaysLabels() {
-                let days = configuration.l10n.weekDays.slice();
+    computed: {
+        firstWeekDate() {
+            // We want the first day in the calendar. Problem: it can
+            // differ from the first day of the month since the first
+            // day of the first week can be at the end of the previous
+            // month. We must calculate which day of the week we are,
+            // and substract enough days to get the first day of the
+            // week (Monday or Sunday, depending on the firstDay prop).
+            const firstWeekDate = new Date(this.year, this.month, 1);
+            const day = firstWeekDate.getDay();
+            if (day !== this.numericalFirstDay) {
+                let daysToSubstract;
                 if (this.firstDay === 'sunday') {
-                    // the days list is always generated with "monday" as
-                    // first value
-                    const sunday = days.pop();
-                    days.unshift(sunday);
+                    // JavaScript considers first day of the week to be
+                    // Sunday (day = 0). If firstDay prop is Sunday, we
+                    // don't have to do much than substracting the day
+                    // to current date.
+                    daysToSubstract = day;
+                } else if (day === 0) {
+                    // But if firstDay prop is Monday, we consider that
+                    // Sunday index is after Saturday. We still need to
+                    // substract 1 because of the offset due to
+                    // JavaScript considering first day being Sunday.
+                    daysToSubstract = 7 - 1;
+                } else {
+                    // Same here, but other days are indexed in the
+                    // correct order.
+                    daysToSubstract = day - 1;
                 }
-                return days;
-            },
 
-            weeks() {
-                const interval = new DateInterval(this.firstWeekDate, this.lastWeekDate);
-                let weeks = [];
-                let week;
-                interval.forEach((date) => {
-                    if (date.getDay() === this.numericalFirstDay) {
-                        const weekNumber = getWeekNumber(date);
-                        week = {
-                            number: weekNumber,
-                            days: [],
-                            isHighlighted: this.isHighlighted(weekNumber),
-                            isFirstHighlighted: this.isFirstHighlighted(weekNumber),
-                            isLastHighlighted: this.isLastHighlighted(weekNumber),
-                        }
-                        weeks.push(week);
+                firstWeekDate.setDate(firstWeekDate.getDate() - daysToSubstract);
+            }
+            return firstWeekDate;
+        },
+
+        lastWeekDate() {
+            const lastWeekDate = new Date(this.year, this.month + 1, 0);
+            const day = lastWeekDate.getDay();
+            if (day !== this.numericalLastDay) {
+                let daysToAdd;
+                if (this.firstDay === 'sunday') {
+                    daysToAdd = this.numericalLastDay - day;
+                } else {
+                    daysToAdd = 7 - day;
+                }
+
+                lastWeekDate.setDate(lastWeekDate.getDate() + daysToAdd);
+            }
+            return lastWeekDate;
+        },
+
+        numericalFirstDay() {
+            return this.firstDay === 'monday' ? 1 : 0;
+        },
+
+        numericalLastDay() {
+            return this.firstDay === 'monday' ? 0 : 6;
+        },
+
+        monthLabel() {
+            return configuration.l10n.months[this.month];
+        },
+
+        weekDaysLabels() {
+            let days = configuration.l10n.weekDays.slice();
+            if (this.firstDay === 'sunday') {
+                // the days list is always generated with "monday" as
+                // first value
+                const sunday = days.pop();
+                days.unshift(sunday);
+            }
+            return days;
+        },
+
+        weeks() {
+            const interval = new DateInterval(this.firstWeekDate, this.lastWeekDate);
+            let weeks = [];
+            let week;
+            interval.forEach((date) => {
+                if (date.getDay() === this.numericalFirstDay) {
+                    const weekNumber = getWeekNumber(date);
+                    week = {
+                        number: weekNumber,
+                        days: [],
+                        isHighlighted: this.isHighlighted(weekNumber),
+                        isFirstHighlighted: this.isFirstHighlighted(weekNumber),
+                        isLastHighlighted: this.isLastHighlighted(weekNumber),
                     }
+                    weeks.push(week);
+                }
 
-                    const day = date.getDate();
-                    week.days.push({
-                        label: day < 10 ? '0' + day : day,
-                        today: isToday(date),
-                        notInMonth: date.getMonth() !== this.month,
-                    });
+                const day = date.getDate();
+                week.days.push({
+                    label: day < 10 ? '0' + day : day,
+                    today: isToday(date),
+                    notInMonth: date.getMonth() !== this.month,
                 });
+            });
 
-                return weeks;
-            },
+            return weeks;
+        },
+    },
+
+    methods: {
+        isHighlighted(weekNumber) {
+            if (!this.weeksHighlights) {
+                return false;
+            }
+            return this.weeksHighlights.includes(weekNumber);
         },
 
-        methods: {
-            isHighlighted(weekNumber) {
-                if (!this.weeksHighlights) {
-                    return false;
-                }
-                return this.weeksHighlights.includes(weekNumber);
-            },
-
-            isFirstHighlighted(weekNumber) {
-                if (!this.weeksHighlights) {
-                    return false;
-                }
-                return this.weeksHighlights[0] === weekNumber;
-            },
-
-            isLastHighlighted(weekNumber) {
-                if (!this.weeksHighlights) {
-                    return false;
-                }
-                const highlightsLength = this.weeksHighlights.length;
-                const lastWeekNumber = this.weeksHighlights[highlightsLength - 1];
-                return lastWeekNumber === weekNumber;
-            },
+        isFirstHighlighted(weekNumber) {
+            if (!this.weeksHighlights) {
+                return false;
+            }
+            return this.weeksHighlights[0] === weekNumber;
         },
 
-        template: `
-            <div class="month-calendar">
-                <div class="month-calendar-label">
-                    {{ monthLabel }}
+        isLastHighlighted(weekNumber) {
+            if (!this.weeksHighlights) {
+                return false;
+            }
+            const highlightsLength = this.weeksHighlights.length;
+            const lastWeekNumber = this.weeksHighlights[highlightsLength - 1];
+            return lastWeekNumber === weekNumber;
+        },
+    },
+
+    template: `
+        <div class="month-calendar">
+            <div class="month-calendar-label">
+                {{ monthLabel }}
+            </div>
+
+            <div class="month-calendar-container">
+                <div class="month-calendar-week-header">
+                    <div
+                        v-for="weekDayLabel in weekDaysLabels"
+                        :key="weekDayLabel"
+                    >
+                        {{ weekDayLabel }}
+                    </div>
                 </div>
 
-                <div class="month-calendar-container">
-                    <div class="month-calendar-week-header">
-                        <div
-                            v-for="weekDayLabel in weekDaysLabels"
-                            :key="weekDayLabel"
-                        >
-                            {{ weekDayLabel }}
-                        </div>
-                    </div>
-
+                <div
+                    v-for="week in weeks"
+                    :key="week.number"
+                    :class="['month-calendar-week', {
+                        'highlight': week.isHighlighted,
+                        'first-highlight': week.isFirstHighlighted,
+                        'last-highlight': week.isLastHighlighted,
+                    }]"
+                >
                     <div
-                        v-for="week in weeks"
-                        :key="week.number"
-                        :class="['month-calendar-week', {
-                            'highlight': week.isHighlighted,
-                            'first-highlight': week.isFirstHighlighted,
-                            'last-highlight': week.isLastHighlighted,
+                        v-for="day in week.days"
+                        :key="day.label"
+                        :class="['month-calendar-day', {
+                            'not-in-month': day.notInMonth,
+                            'today': day.today,
                         }]"
                     >
-                        <div
-                            v-for="day in week.days"
-                            :key="day.label"
-                            :class="['month-calendar-day', {
-                                'not-in-month': day.notInMonth,
-                                'today': day.today,
-                            }]"
-                        >
-                            {{ day.label }}
-                        </div>
+                        {{ day.label }}
                     </div>
                 </div>
             </div>
-        `,
-    });
+        </div>
+    `,
+});
 
-    Vue.component('ly-cycle-calendar', {
-        props: {
-            startAt: String,
-            firstDay: String,
-            workWeeks: Number,
-            restWeeks: Number,
+Vue.component('ly-cycle-calendar', {
+    props: {
+        startAt: String,
+        firstDay: String,
+        workWeeks: Number,
+        restWeeks: Number,
+    },
+
+    computed: {
+        startDate() {
+            return new Date(this.startAt);
         },
 
-        computed: {
-            startDate() {
-                return new Date(this.startAt);
-            },
-
-            endDate() {
-                const daysInterval = (this.workWeeks + this.restWeeks) * 7 - 1;
-                const endAt = new Date(this.startAt);
-                endAt.setDate(endAt.getDate() + daysInterval);
-                return endAt;
-            },
-
-            calendars() {
-                const calendars = [];
-                const interval = new DateInterval(this.startDate, this.endDate);
-                interval.forEach(function (date) {
-                    calendars.push({
-                        month: date.getMonth(),
-                        year: date.getFullYear(),
-                    });
-                }, 'month');
-
-                return calendars;
-            },
-
-            weeksHighlight() {
-                let weekNumber = getWeekNumber(this.startDate);
-                let highlight = [];
-                for (let i = 0; i < this.workWeeks + this.restWeeks ; i++) {
-                    highlight.push(weekNumber++);
-                }
-                return highlight;
-            },
+        endDate() {
+            const daysInterval = (this.workWeeks + this.restWeeks) * 7 - 1;
+            const endAt = new Date(this.startAt);
+            endAt.setDate(endAt.getDate() + daysInterval);
+            return endAt;
         },
 
-        template: `
-            <div class="cycle-calendars columns columns-border columns-center">
-                <div
-                    v-for="calendar in calendars"
-                    :key="calendar.year + calendar.month"
-                    class="column"
-                >
-                    <ly-month-calendar
-                        :month="calendar.month"
-                        :year="calendar.year"
-                        :first-day="firstDay"
-                        :weeks-highlights="weeksHighlight"
-                    ></ly-month-calendar>
-                </div>
+        calendars() {
+            const calendars = [];
+            const interval = new DateInterval(this.startDate, this.endDate);
+            interval.forEach(function (date) {
+                calendars.push({
+                    month: date.getMonth(),
+                    year: date.getFullYear(),
+                });
+            }, 'month');
+
+            return calendars;
+        },
+
+        weeksHighlight() {
+            let weekNumber = getWeekNumber(this.startDate);
+            let highlight = [];
+            for (let i = 0; i < this.workWeeks + this.restWeeks ; i++) {
+                highlight.push(weekNumber++);
+            }
+            return highlight;
+        },
+    },
+
+    template: `
+        <div class="cycle-calendars columns columns-border columns-center">
+            <div
+                v-for="calendar in calendars"
+                :key="calendar.year + calendar.month"
+                class="column"
+            >
+                <ly-month-calendar
+                    :month="calendar.month"
+                    :year="calendar.year"
+                    :first-day="firstDay"
+                    :weeks-highlights="weeksHighlight"
+                ></ly-month-calendar>
             </div>
-        `,
-    });
+        </div>
+    `,
+});
 
-    new Vue({
-        el: 'ly-cycle-calendar',
-    });
-}
-
-initVue();
+new Vue({
+    el: 'ly-cycle-calendar',
+});
