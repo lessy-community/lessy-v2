@@ -1,0 +1,33 @@
+<?php
+    $this->template('base.phtml', [
+        'layout_name' => 'application',
+        'title' => $title,
+        'success' => $success,
+        'error' => $error,
+    ]);
+?>
+
+<nav class="layout-navigation">
+    <ul>
+        <li>
+            <a href="<?= url('home#dashboard') ?>">
+                <i class="fa fa-fw fa-tachometer"></i>
+                <?= _('Dashboard') ?>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<div class="layout-main-container">
+    <?php if ($error): ?>
+        <p class="alert alert-error">
+            <?= $error ?>
+        </p>
+    <?php elseif ($success): ?>
+        <p class="alert alert-success">
+            <?= $success ?>
+        </p>
+    <?php endif; ?>
+
+    <?= $this->safe('content') ?>
+</div>

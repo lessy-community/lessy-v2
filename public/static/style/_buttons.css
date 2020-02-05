@@ -41,7 +41,7 @@ button.button-large {
 }
 
 button.button-primary {
-    color: var(--color-white);
+    color: var(--color-white-pine);
 
     background-color: var(--color-pine-70);
     box-shadow: 0 0 1px var(--color-pine-90);
