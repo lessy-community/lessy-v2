@@ -5,19 +5,19 @@
         <meta name="viewport" content="initial-scale=1.0" />
         <link rel=stylesheet type=text/css href="<?= url_static('static/style/main.css') ?>">
         <link rel=stylesheet type=text/css href="<?= url_static('static/fork-awesome/css/fork-awesome.min.css') ?>">
-        <script src="<?= url_static('static/popper.min.js') ?>" defer="defer" async="async"></script>
+        <script src="<?= url_static('static/popper.min.js') ?>" defer="defer"></script>
 
         <?php if ($environment === 'production'): ?>
-            <script src="<?= url_static('static/vue.min.js') ?>" defer="defer" async="async"></script>
+            <script src="<?= url_static('static/vue.min.js') ?>" defer="defer"></script>
         <?php else: ?>
-            <script src="<?= url_static('static/vue.dev.js') ?>" defer="defer" async="async"></script>
+            <script src="<?= url_static('static/vue.dev.js') ?>" defer="defer"></script>
         <?php endif; ?>
 
         <script id="javascript-configuration" type="application/json">
             <?= $this->safe('javascript_configuration') ?>
         </script>
 
-        <script src="<?= url_static('static/scripts/main.js') ?>" defer="defer" async="async"></script>
+        <script type="module" src="<?= url_static('static/scripts/main.js') ?>" defer="defer"></script>
 
         <?php if (isset($title)): ?>
             <title><?= $title ?> · Lessy</title>
