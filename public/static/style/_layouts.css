@@ -7,24 +7,18 @@
 }
 
 .layout .layout-header {
-    padding: .5rem 1rem;
 }
 
 .layout .layout-header-home {
     text-decoration: none;
 }
 
-@media(min-width: 800px) {
-    .layout .layout-header {
-        padding: .5rem 2rem;
-    }
-}
-
 .layout .layout-header-container {
     display: flex;
-    max-width: 80rem;
+    max-width: 60rem;
     margin-left: auto;
     margin-right: auto;
+    padding: .5rem 1rem;
 
     align-items: stretch;
 }
@@ -41,9 +35,11 @@
 }
 
 .layout > .layout-main {
-    padding: 1rem;
-
     flex-grow: 1;
+}
+
+.layout .layout-main-container {
+    padding: 2rem 1rem;
 }
 
 .layout.connected .layout-header {
@@ -61,6 +57,7 @@
                                        var(--color-pine-70) calc(100% - 10rem));
 }
 
+/* Layout one-column */
 .layout.layout-one-column .layout-main {
     background: linear-gradient(225deg, var(--color-grey-10) 80%,
                                         var(--color-grey-20) 80%,
@@ -96,4 +93,68 @@
     border-radius: .25rem;
 
     content: '';
+}
+
+/* Layout application */
+.layout.layout-application.connected .layout-header {
+    border-bottom: none;
+}
+
+.layout.layout-application .layout-main {
+    background-color: var(--color-grey-10);
+}
+
+.layout.layout-application .layout-navigation {
+    color: var(--color-white);
+    text-align: center;
+
+    background-color: var(--color-pine-70);
+    box-shadow: 0 2px 3px var(--color-pine-90) inset;
+}
+
+.layout.layout-application .layout-navigation ul {
+    display: flex;
+    max-width: 60rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 0;
+
+    list-style: none;
+}
+
+.layout.layout-application .layout-navigation li + li {
+    margin-left: 1rem;
+}
+
+.layout.layout-application .layout-navigation a {
+    padding: .5rem 1rem;
+
+    color: var(--color-white-pine);
+    font-size: 1.2rem;
+    text-decoration: none;
+
+    border: 2px solid transparent;
+    border-radius: 1.5rem;
+    transition: all .1s ease-in-out;
+}
+
+.layout.layout-application .layout-navigation a.active {
+    background-color: var(--color-pine-80);
+    box-shadow: 0 0 2px var(--color-grey-90);
+}
+
+.layout.layout-application .layout-navigation a:hover,
+.layout.layout-application .layout-navigation a:focus {
+    border-color: var(--color-white-pine);
+    box-shadow: 0 0 6px var(--color-pine-50),
+                0 0 5px var(--color-pine-70) inset;
+    outline: none;
+}
+
+.layout.layout-application .layout-main-container {
+    max-width: 60rem;
+    margin-left: auto;
+    margin-right: auto;
 }

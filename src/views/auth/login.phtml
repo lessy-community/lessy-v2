@@ -1,4 +1,4 @@
-<?php $this->template('base.phtml', ['title' => _('Login'), 'error' => $error]); ?>
+<?php $this->template('one_column.phtml', ['title' => _('Login'), 'error' => $error]); ?>
 
 <form method="post" action="<?= url('auth#create_session') ?>">
     <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />

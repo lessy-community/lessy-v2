@@ -1,0 +1,28 @@
+<?php
+    $this->template('base.phtml', [
+        'layout_name' => 'one-column',
+        'title' => isset($title) ? $title : null,
+        'success' => $success,
+        'error' => $error,
+    ]);
+?>
+
+<div class="layout-main-container">
+    <?php if (isset($title)): ?>
+        <header class="layout-main-header">
+            <h1><?= $title ?></h1>
+        </header>
+    <?php endif; ?>
+
+    <?php if ($error): ?>
+        <p class="alert alert-error">
+            <?= $error ?>
+        </p>
+    <?php elseif ($success): ?>
+        <p class="alert alert-success">
+            <?= $success ?>
+        </p>
+    <?php endif; ?>
+
+    <?= $this->safe('content') ?>
+</div>

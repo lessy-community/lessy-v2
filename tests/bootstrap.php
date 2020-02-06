@@ -13,7 +13,9 @@ include $app_path . '/autoload.php';
     '\Lessy\models\dao\User',
     [
         'created_at' => time(),
-        'username' => 'john',
+        'username' => \Minz\Tests\DatabaseFactory::sequence('a', function ($n) {
+            return 'john-' . $n;
+        }),
         'email' => 'john@doe.com',
         'password_hash' => password_hash('secret', PASSWORD_BCRYPT),
         'locale' => 'en_GB',
@@ -30,11 +32,26 @@ include $app_path . '/autoload.php';
             $users_factory = new \Minz\Tests\DatabaseFactory('users');
             return $users_factory->create();
         },
-        'number' => 1,
+        'number' => \Minz\Tests\DatabaseFactory::sequence(),
         'start_at' => time(),
         'work_weeks' => 4,
         'rest_weeks' => 1,
         'end_at' => time() + ((5 * 7) - 1) * 86400,
+    ]
+);
+
+\Minz\Tests\DatabaseFactory::addFactory(
+    'tasks',
+    '\Lessy\models\dao\Task',
+    [
+        'created_at' => time(),
+        'user_id' => function () {
+            $users_factory = new \Minz\Tests\DatabaseFactory('users');
+            return $users_factory->create();
+        },
+        'label' => 'Do something, John',
+        'priority' => \Minz\Tests\DatabaseFactory::sequence(),
+        'planned_count' => 0,
     ]
 );
 

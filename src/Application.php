@@ -15,6 +15,7 @@ class Application
         // Initialize the routes
         $router = new \Minz\Router();
         $router->addRoute('get', '/', 'home#index');
+        $router->addRoute('get', '/dashboard', 'home#dashboard');
 
         $router->addRoute('cli', '/system/init', 'system#init');
         $router->addRoute('cli', '/system/migrate', 'system#migrate');
@@ -30,6 +31,9 @@ class Application
         $router->addRoute('post', '/cycles/preferences', 'cycles#update_preferences');
         $router->addRoute('get', '/cycles/starting', 'cycles#starting');
         $router->addRoute('post', '/cycles/starting', 'cycles#start');
+
+        $router->addRoute('get', '/tasks', 'tasks#index');
+        $router->addRoute('post', '/tasks', 'tasks#create');
 
         $this->engine = new \Minz\Engine($router);
         \Minz\Url::setRouter($router);

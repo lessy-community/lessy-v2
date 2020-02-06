@@ -1,0 +1,62 @@
+<?php
+    $this->template('application.phtml', [
+        'title' => _('Tasks'),
+        'current_page' => 'tasks',
+        'success' => $success,
+        'error' => $error,
+    ]);
+?>
+
+<form method="post" action="<?= url('tasks#create') ?>">
+    <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+
+    <div class="form-group">
+        <label for="label"><?= _('New task') ?></label>
+
+        <div class="form-group-stack">
+            <input
+                type="text"
+                name="label"
+                id="label"
+                required
+                value="<?= isset($label) ? $label : '' ?>"
+                autofocus
+                autocomplete="off"
+                <?= isset($errors['label']) ? 'class="invalid"' : '' ?>
+            />
+
+            <button type="submit" class="button-primary">
+                <?= _('Create') ?>
+            </button>
+        </div>
+
+        <?php if (isset($errors['label'])): ?>
+            <p class="form-group-error">
+                <?= $errors['label'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+</form>
+
+<?php if ($tasks): ?>
+    <h2 class="list-title">
+        <?= _nf(
+            '%d task in your backlog',
+            '%d tasks in your backlog',
+            count($tasks),
+            count($tasks)
+        ) ?>
+    </h2>
+
+    <ul class="list list-stripped">
+        <?php foreach ($tasks as $task): ?>
+            <li class="list-item">
+                <?= $task->label ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php else: ?>
+    <p class="list-placeholder">
+        <?= _('There are no tasks here…') ?>
+    </p>
+<?php endif; ?>
