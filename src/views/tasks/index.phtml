@@ -7,6 +7,37 @@
     ]);
 ?>
 
+<form method="post" action="<?= url('tasks#create') ?>">
+    <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+
+    <div class="form-group">
+        <label for="label"><?= _('New task') ?></label>
+
+        <div class="form-group-stack">
+            <input
+                type="text"
+                name="label"
+                id="label"
+                required
+                value="<?= isset($label) ? $label : '' ?>"
+                autofocus
+                autocomplete="off"
+                <?= isset($errors['label']) ? 'class="invalid"' : '' ?>
+            />
+
+            <button type="submit" class="button-primary">
+                <?= _('Create') ?>
+            </button>
+        </div>
+
+        <?php if (isset($errors['label'])): ?>
+            <p class="form-group-error">
+                <?= $errors['label'] ?>
+            </p>
+        <?php endif; ?>
+    </div>
+</form>
+
 <?php if ($tasks): ?>
     <h2 class="list-title">
         <?= _nf(

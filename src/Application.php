@@ -33,6 +33,7 @@ class Application
         $router->addRoute('post', '/cycles/starting', 'cycles#start');
 
         $router->addRoute('get', '/tasks', 'tasks#index');
+        $router->addRoute('post', '/tasks', 'tasks#create');
 
         $this->engine = new \Minz\Engine($router);
         \Minz\Url::setRouter($router);

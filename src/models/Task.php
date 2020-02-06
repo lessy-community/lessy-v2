@@ -29,6 +29,7 @@ class Task extends \Minz\Model
         'label' => [
             'type' => 'string',
             'required' => true,
+            'validator' => '\Lessy\models\Task::validateLabel',
         ],
 
         'priority' => [
@@ -89,5 +90,10 @@ class Task extends \Minz\Model
             $tasks[] = new self($values);
         }
         return $tasks;
+    }
+
+    public static function validateLabel($label)
+    {
+        return strlen($label) > 0;
     }
 }

@@ -45,4 +45,16 @@ class Task extends \Minz\DatabaseModel
             throw self::sqlStatementError($statement);
         }
     }
+
+    public function highestPriorityForUser($user_id)
+    {
+        $sql = "SELECT MAX(priority) FROM {$this->table_name} WHERE user_id = ?";
+        $statement = $this->prepare($sql);
+        $result = $statement->execute([$user_id]);
+        if (!$result) {
+            throw self::sqlStatementError($statement);
+        }
+
+        return intval($statement->fetchColumn());
+    }
 }
