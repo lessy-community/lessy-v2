@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-01-22 22:56+0100\n"
-"PO-Revision-Date: 2020-01-22 22:58+0100\n"
+"POT-Creation-Date: 2020-02-06 22:11+0100\n"
+"PO-Revision-Date: 2020-02-06 22:12+0100\n"
 "Last-Translator: Marien Fressinaud <dev@marienfressinaud.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -11,11 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.2.4\n"
 "X-Poedit-Basepath: ../../../src\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: _f;_n:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: _f;_n:1,2;_nf:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: auth.php:46 auth.php:129 cycles.php:52 cycles.php:140
+#: Application.php:65
+msgid "You’re now connected, welcome back!"
+msgstr "Vous êtes désormais connecté·e, bon retour parmi nous !"
+
+#: Application.php:67
+msgid "You’re now disconnected, see you!"
+msgstr "Vous êtes désormais déconnecté·e, à bientôt !"
+
+#: auth.php:46 auth.php:136 cycles.php:52 cycles.php:140 tasks.php:41
 msgid "A security verification failed, you should submit the form again."
 msgstr ""
 "Une validation de sécurité a échoué, vous devriez valider le formulaire à "
@@ -49,7 +57,7 @@ msgstr ""
 "Nous n’avons pas pu créer votre compte pour une raison inconnue. Merci de "
 "contacter le support."
 
-#: auth.php:142 auth.php:153
+#: auth.php:150 auth.php:168
 msgid "We were unable to log you in, your credentials seem to be invalid."
 msgstr ""
 "Nous n’avons pas pu vous connecter, vos identifiants semblent invalides."
@@ -91,31 +99,35 @@ msgstr ""
 "Nous n’avons pas pu démarrer votre cycle pour une raison inconnue. Merci de "
 "contacter le support."
 
-#: home.php:18
-msgid "You’re now connected, welcome back!"
-msgstr "Vous êtes désormais connecté·e, bon retour parmi nous !"
+#: tasks.php:51
+msgid "The label is required."
+msgstr "Le label est requis."
 
-#: home.php:20
-msgid "You’re now disconnected, see you!"
-msgstr "Vous êtes désormais déconnecté·e, à bientôt !"
+#: tasks.php:70
+msgid ""
+"We were unable to create your task for an unknown reason. Please contact the "
+"support."
+msgstr ""
+"Nous n’avons pas pu créer votre tâche pour une raison inconnue. Merci de "
+"contacter le support."
 
 #: views/auth/login.phtml:1
 msgid "Login"
 msgstr "Connexion"
 
-#: views/auth/login.phtml:7
+#: views/auth/login.phtml:11
 msgid "Username or email"
 msgstr "Nom d’utilisateur·ice ou courriel"
 
-#: views/auth/login.phtml:19 views/auth/register.phtml:88
+#: views/auth/login.phtml:23 views/auth/register.phtml:88
 msgid "Password"
 msgstr "Mot de passe"
 
-#: views/auth/login.phtml:31 views/home/index.phtml:36
+#: views/auth/login.phtml:35 views/home/index.phtml:36
 msgid "Log in"
 msgstr "Se connecter"
 
-#: views/auth/login.phtml:35
+#: views/auth/login.phtml:39
 msgid "Back to homepage"
 msgstr "Retour à l’accueil"
 
@@ -297,27 +309,27 @@ msgstr[1] "La période de repos durera %d semaines."
 msgid "The cycle will end on %s."
 msgstr "Le cycle se terminera le %s."
 
-#: views/cycles/starting.phtml:27
+#: views/cycles/starting.phtml:34
 msgid "Start the cycle"
 msgstr "Démarrer le cycle"
 
-#: views/cycles/starting.phtml:32
+#: views/cycles/starting.phtml:39
 msgid "You can’t start a new cycle while another one is running."
 msgstr "Vous ne pouvez démarrer un cycle tant qu’un autre est en cours."
 
-#: views/cycles/starting.phtml:36
+#: views/cycles/starting.phtml:43
 msgid "Back to the dashboard"
 msgstr "Retour au tableau de bord"
 
-#: views/cycles/starting.phtml:42
+#: views/cycles/starting.phtml:49
 msgid "Change the cycles preferences"
 msgstr "Changer les préférences des cycles"
 
-#: views/home/dashboard.phtml:3
+#: views/home/dashboard.phtml:3 views/templates/application.phtml:18
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: views/home/dashboard.phtml:9
+#: views/home/dashboard.phtml:10
 #, php-format
 msgid "Running cycle %d"
 msgstr "Cycle %d en cours"
@@ -334,6 +346,29 @@ msgstr "ou"
 msgid "register"
 msgstr "s’inscrire"
 
-#: views/templates/base.phtml:40
+#: views/tasks/index.phtml:3 views/templates/application.phtml:28
+msgid "Tasks"
+msgstr "Tâches"
+
+#: views/tasks/index.phtml:14
+msgid "New task"
+msgstr "Nouvelle tâche"
+
+#: views/tasks/index.phtml:29
+msgid "Create"
+msgstr "Créer"
+
+#: views/tasks/index.phtml:44
+#, php-format
+msgid "%d task in your backlog"
+msgid_plural "%d tasks in your backlog"
+msgstr[0] "%d tâche dans votre liste d’attente"
+msgstr[1] "%d tâches dans votre liste d’attente"
+
+#: views/tasks/index.phtml:60
+msgid "There are no tasks here…"
+msgstr "Il n’y a aucune tâche ici…"
+
+#: views/templates/base.phtml:52
 msgid "Logout"
 msgstr "Se déconnecter"
