@@ -24,3 +24,16 @@ CREATE TABLE cycles (
     rest_weeks INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    created_at DATETIME NOT NULL,
+    planned_at DATETIME,
+    due_at DATETIME,
+    finished_at DATETIME,
+    label TEXT NOT NULL,
+    priority INTEGER NOT NULL DEFAULT 0,
+    planned_count INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
