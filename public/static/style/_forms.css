@@ -119,12 +119,9 @@ textarea {
 }
 
 .form-group-radios {
-    display: flex;
     margin-bottom: .25rem;
     padding-left: .5rem;
     padding-right: .5rem;
-
-    align-items: flex-start;
 }
 
 .form-group-radio {
@@ -132,13 +129,59 @@ textarea {
 
     align-items: center;
 }
-.form-group-radio + .form-group-radio {
-    margin-left: 2rem;
-}
-
 .form-group-radio label {
     margin-bottom: 0;
     padding-left: .25rem;
+}
+
+.form-group-radios.form-group-radios-row {
+    display: flex;
+
+    align-items: flex-start;
+}
+
+.form-group-radios.form-group-radios-row .form-group-radio + .form-group-radio {
+    margin-top: 0;
+    margin-left: 2rem;
+}
+
+.form-group-radios-group {
+    padding: .5rem;
+
+    border: 1px solid var(--color-grey-30);
+}
+
+.form-group-radios-group .form-group-radios-group-child {
+    display: none;
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+    margin-left: 1.5rem;
+}
+
+.form-group-radios-group.active .form-group-radios-group-child {
+    display: block;
+}
+
+.form-group-radios-group + .form-group-radios-group {
+    border-top: none;
+}
+
+.form-group-radios-group:first-child {
+    border-radius: .25rem .25rem 0 0;
+}
+.form-group-radios-group:last-child {
+    border-radius: 0 0 .25rem .25rem;
+}
+
+.form-group-days {
+    display: flex;
+}
+
+.form-group-days button {
+    padding-left: .5rem;
+    padding-right: .5rem;
+
+    flex: 1;
 }
 
 .form-group-caption {

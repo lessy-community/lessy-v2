@@ -1,7 +1,11 @@
 import LyCycleCalendar from './components/LyCycleCalendar.js';
 
+import initFormGroupsRadios from './form_group_radios.js';
+import initFormGroupsDays from './form_group_days.js';
 import initPopovers from './popovers.js';
 
+initFormGroupsRadios();
+initFormGroupsDays();
 initPopovers();
 
 // Autosubmit the locale form

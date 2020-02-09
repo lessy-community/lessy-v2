@@ -1,0 +1,167 @@
+<?php
+    $this->template('one_column.phtml', [
+        'title' => _('Create a new routine'),
+        'error' => $error,
+        'success' => $success,
+    ]);
+?>
+
+<form method="post" action="">
+    <input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
+
+    <div class="form-group">
+        <label for="label">
+            <?= _('What do you want to automate?') ?>
+        </label>
+
+        <input type="text" id="label" name="label" required autofocus />
+    </div>
+
+    <div class="form-group">
+        <p class="label"><?= _('Is it a task or something to remind?') ?></p>
+
+        <div class="form-group-radios form-group-radios-row">
+            <div class="form-group-radio">
+                <input
+                    type="radio"
+                    id="type-task"
+                    name="type"
+                    value="task"
+                    checked
+                />
+                <label for="type-task">
+                    <?= _('Task') ?>
+                </label>
+            </div>
+
+            <div class="form-group-radio">
+                <input
+                    type="radio"
+                    id="type-reminder"
+                    name="type"
+                    value="reminder"
+                />
+                <label for="type-reminder">
+                    <?= _('Reminder') ?>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p class="label"><?= _('How often should it be repeated?') ?></p>
+
+        <div class="form-group-radios">
+            <div class="form-group-radios-group">
+                <div class="form-group-radio">
+                    <input
+                        type="radio"
+                        id="repeat-frequency-daily"
+                        name="repeat-frequency"
+                        value="daily"
+                    />
+                    <label for="repeat-frequency-daily">
+                        <?= _('Daily on…') ?>
+                    </label>
+                </div>
+
+                <div class="form-group-radios-group-child">
+                    <div class="form-group-days" data-behavior="checkbox">
+                        <button type="button" class="button-primary"><?= _('Mon') ?></button>
+                        <button type="button" class="button-primary"><?= _('Tue') ?></button>
+                        <button type="button" class="button-primary"><?= _('Wed') ?></button>
+                        <button type="button" class="button-primary"><?= _('Thu') ?></button>
+                        <button type="button" class="button-primary"><?= _('Fri') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Sat') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Sun') ?></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group-radios-group active">
+                <div class="form-group-radio">
+                    <input
+                        type="radio"
+                        id="repeat-frequency-week"
+                        name="repeat-frequency"
+                        value="week"
+                        checked
+                    />
+                    <label for="repeat-frequency-week">
+                        <?= _('Once a week on…') ?>
+                    </label>
+                </div>
+
+                <div class="form-group-radios-group-child">
+                    <div class="form-group-days" data-behavior="radio">
+                        <button type="button" class="button-primary"><?= _('Mon') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Tue') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Wed') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Thu') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Fri') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Sat') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Sun') ?></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group-radios-group">
+                <div class="form-group-radio">
+                    <input
+                        type="radio"
+                        id="repeat-frequency-cycle-start"
+                        name="repeat-frequency"
+                        value="cycle-start"
+                    />
+                    <label for="repeat-frequency-cycle-start">
+                        <?= _('Once a cycle on first…') ?>
+                    </label>
+                </div>
+
+                <div class="form-group-radios-group-child">
+                    <div class="form-group-days" data-behavior="radio">
+                        <button type="button" class="button-primary"><?= _('Mon') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Tue') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Wed') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Thu') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Fri') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Sat') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Sun') ?></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group-radios-group">
+                <div class="form-group-radio">
+                    <input
+                        type="radio"
+                        id="repeat-frequency-cycle-end"
+                        name="repeat-frequency"
+                        value="cycle-end"
+                    />
+                    <label for="repeat-frequency-cycle-end">
+                        <?= _('Once a cycle on last…') ?>
+                    </label>
+                </div>
+
+                <div class="form-group-radios-group-child">
+                    <div class="form-group-days" data-behavior="radio">
+                        <button type="button" class="button-primary"><?= _('Mon') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Tue') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Wed') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Thu') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Fri') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Sat') ?></button>
+                        <button type="button" class="button-ghost"><?= _('Sun') ?></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group form-group-actions">
+        <button type="submit" class="button-primary button-large">
+            <?= _('Create the routine') ?>
+        </button>
+    </div>
+</form>

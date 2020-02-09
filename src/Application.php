@@ -32,6 +32,8 @@ class Application
         $router->addRoute('get', '/cycles/starting', 'cycles#starting');
         $router->addRoute('post', '/cycles/starting', 'cycles#start');
 
+        $router->addRoute('get', '/routines/new', 'routines#init');
+
         $router->addRoute('get', '/tasks', 'tasks#index');
         $router->addRoute('post', '/tasks', 'tasks#create');
 
